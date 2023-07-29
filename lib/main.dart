@@ -15,10 +15,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Turismo Demo',
       home: Plantilla(),
-      // initialRoute: RouteManager.Homepage_Route,
-      // onGenerateRoute: RouteManager.generateRoute,
     );
   }
 }
-
-

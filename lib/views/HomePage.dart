@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:turismo_flutter/components/BottonBar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -8,13 +7,12 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-            "Michoacan Ofrece",
+          "Michoacan Ofrece",
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,

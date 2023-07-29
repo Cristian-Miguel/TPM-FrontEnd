@@ -3,11 +3,11 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 
 class JWT {
   static tokenValido() async {
-    var Token = await ManageSecureStorage.getToken();
-    if(Token == null){
+    var token = await ManageSecureStorage.getToken();
+    if (token == null) {
       return "false";
     } else {
-      bool isTokenExpired = JwtDecoder.isExpired(Token.toString());
+      bool isTokenExpired = JwtDecoder.isExpired(token.toString());
       return (!isTokenExpired).toString();
     }
   }
