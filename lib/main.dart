@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:turismo_flutter/components/Plantilla.dart';
-// import 'package:turismo_flutter/config/Routes.dart';
 
 void main() {
   runApp(const MyApp());

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:turismo_flutter/views/Perfil.dart';
 // import 'package:turismo_flutter/views/SingIn.dart';
 import 'package:turismo_flutter/Controllers/AuthController.dart';
+import 'package:turismo_flutter/config/Encriptar.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -18,8 +19,10 @@ class LoginState extends State<Login> {
   var isLogged = false;
 
   getAuthRequest() async {
-    var response = await AuthController.postLogin(
+    var password = Encriptar.encriptarPassword(
         _emailInputTextController.text, _passwordInputTextController.text);
+    var response = await AuthController.postLogin(
+        _emailInputTextController.text, password);
     setState(() {
       response == 201 || response == 200 ? isLogged = true : isLogged = false;
     });
