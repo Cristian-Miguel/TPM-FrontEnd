@@ -25,6 +25,7 @@ class _PerfilAdminState extends State<PerfilAdmin> {
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
+        elevation: 10,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 100.0, horizontal: 50.0),

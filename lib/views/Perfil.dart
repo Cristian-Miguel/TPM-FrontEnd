@@ -14,12 +14,11 @@ class Perfil extends StatefulWidget {
 
 class PerfilState extends State<Perfil> {
   var isCloseSession = false;
-  int posicion = 4;
+  int posicion = 3;
 
   getValidaciones() async {
     var isValidToken = await JWT.tokenValido();
     int posicion = 3;
-    print('Perfil Main ${isValidToken}');
     if (isValidToken.toString() == 'true') {
       var rol = await VerificarRol.validarRol();
       switch (rol.toString()) {

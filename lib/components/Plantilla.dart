@@ -18,33 +18,30 @@ class Plantilla extends StatefulWidget {
 class PlantillaState extends State<Plantilla> {
   var indexTap = 0;
   var indexPage = 0;
-  // bool colorChange = false;
-  // var desc = 0;
 
   final List<Widget> vistas = [
-    const HomePage(),
-    const Descubrir(),
-    const Reservas(),
-    const Mensajes(),
-    const PerfilAdmin(),
-    const PerfilEmpresa(),
-    const PerfilUsuario(),
-    const Login(),
+    const HomePage(), //0
+    const Descubrir(), //1
+    const Reservas(), //2
+    const Mensajes(), //3
+    const PerfilAdmin(), //4
+    const PerfilEmpresa(), //5
+    const PerfilUsuario(), //6
+    const Login(), //7
   ];
 
   checkPerfil(int index) async {
     var isValidToken = await JWT.tokenValido();
     int posicion = 7;
-    print('Pantilla Perfil ${isValidToken}');
     if (isValidToken.toString() == 'true') {
       var rol = await VerificarRol.validarRol();
       switch (rol.toString()) {
         case '1': // * rol Admin
-          posicion = 5;
+          posicion = 4;
         case '2': // * rol Usuario
-          posicion = 7;
-        case '3': // * rol Empresa
           posicion = 6;
+        case '3': // * rol Empresa
+          posicion = 5;
         default: // * login
           posicion = 7;
       }
@@ -53,23 +50,17 @@ class PlantillaState extends State<Plantilla> {
       indexTap = index;
       indexPage = posicion;
     });
-    print('Tap = ${indexTap}  Page = ${indexPage}');
   }
 
-//colorChange ? vistas[indexPage] : vistas[indexTap]
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: IndexedStack(
-        index: indexPage,
-        children: vistas,
-      ),
+      body: vistas[indexPage],
       bottomNavigationBar: BottomNavigationBar(
+          elevation: 15,
           backgroundColor: Colors.white,
           onTap: (index) => {
-                // desc = 0,
-                // colorChange ? Colors.black54 :
                 if (index < 4)
                   {
                     buscar =
@@ -77,7 +68,6 @@ class PlantillaState extends State<Plantilla> {
                     setState(() {
                       indexTap = index;
                       indexPage = index;
-                      // colorChange = false;
                     })
                   }
                 else

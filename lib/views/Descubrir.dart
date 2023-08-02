@@ -18,7 +18,8 @@ class DescubrirState extends State<Descubrir> {
           width: double.infinity,
           height: 40,
           decoration: BoxDecoration(
-            color: const Color.fromRGBO(93, 93, 93, 0.1), borderRadius: BorderRadius.circular(50),
+            color: const Color.fromRGBO(93, 93, 93, 0.1),
+            borderRadius: BorderRadius.circular(50),
           ),
           child: Center(
             child: TextField(
@@ -29,9 +30,7 @@ class DescubrirState extends State<Descubrir> {
                   // icon: Icon(Icons.clear),
                   icon: Icon(Icons.search),
                   color: Colors.pinkAccent,
-                  onPressed: () {
-
-                  },
+                  onPressed: () {},
                 ),
                 hintText: '¿Qué quieres vivir?...',
                 border: InputBorder.none,
@@ -40,6 +39,7 @@ class DescubrirState extends State<Descubrir> {
           ),
         ),
         backgroundColor: Colors.white,
+        elevation: 10,
       ),
       body: const Center(
         child: Text('Descubrir'),

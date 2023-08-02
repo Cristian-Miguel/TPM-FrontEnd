@@ -16,6 +16,7 @@ class ReservasState extends State<Reservas> {
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
+        elevation: 10,
       ),
       body: const Center(
         child: Text('Reservas'),

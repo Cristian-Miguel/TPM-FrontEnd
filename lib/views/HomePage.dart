@@ -16,11 +16,13 @@ class HomePageState extends State<HomePage> {
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
+        elevation: 10,
       ),
-      body: const Center(
-        child: Text('Home'),
+      body: const SingleChildScrollView(
+        child: Center(
+          child: Text('Home'),
+        ),
       ),
-      // bottomNavigationBar: BottonBar(),
     );
   }
 }
