@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:turismo_flutter/components/Alertas.dart';
+import 'package:turismo_flutter/components/PantallaCarga.dart';
 import 'package:turismo_flutter/config/ValidarCampos.dart';
 import 'package:turismo_flutter/views/OlvidarContrasena.dart';
 import 'package:turismo_flutter/views/Perfil.dart';
 import 'package:turismo_flutter/Controllers/AuthController.dart';
 import 'package:turismo_flutter/config/Encriptar.dart';
-import 'package:turismo_flutter/views/SingIn.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:turismo_flutter/views/SignIn.dart';
+import 'dart:async';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -19,7 +21,12 @@ class LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   var indexPage = 0;
   var response = 0;
+  var errorMensaje = '';
   var isView = false;
+  var isCharging = false;
+  var isError = false;
+  var hiddenPassword = true;
+  var iconEye = const Icon(Icons.visibility);
 
   final List<Widget> listaViews = [
     const Perfil(),
@@ -28,22 +35,47 @@ class LoginState extends State<Login> {
   ];
 
   getAuthRequest() async {
+    setState(() {
+      isCharging = true;
+    });
     if (_formKey.currentState!.validate()) {
       var password = Encriptar.encriptarPassword(
           _emailInputTextController.text, _passwordInputTextController.text);
       var response = await AuthController.postLogin(
           _emailInputTextController.text, password);
+      if (response == 201 || response == 200) {
+        Timer(const Duration(milliseconds: 1500), () {
+          setState(() {
+            isCharging = false;
+            indexPage = 0;
+            isView = true;
+          });
+        });
+      } else if (response >= 500 && response <= 511) {
+        setState(() {
+          isView = false;
+          const Alertas(
+            indexAlerta: 0,
+            textoAlerta: 'Error en el servidor',
+          ).generarAlerta(context);
+        });
+      } else {
+        Timer(const Duration(milliseconds: 1500), () {
+          setState(() {
+            isView = false;
+            const Alertas(
+              indexAlerta: 0,
+              textoAlerta: 'Correo o contraseña incorrecta',
+            ).generarAlerta(context);
+          });
+        });
+      }
+      isCharging = false;
+    } else {
       setState(() {
-        response == 201 || response == 200 ? isView = true : isView = false;
+        isCharging = false;
       });
     }
-  }
-
-  @override
-  void dispose() {
-    _emailInputTextController.dispose();
-    _passwordInputTextController.dispose();
-    super.dispose();
   }
 
   @override
@@ -56,7 +88,7 @@ class LoginState extends State<Login> {
       child: Form(
         key: _formKey,
         child: Stack(
-          // mainAxisSize: MainAxisSize.min,
+          alignment: AlignmentDirectional.center,
           children: <Widget>[
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -84,8 +116,8 @@ class LoginState extends State<Login> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) return 'Campo vacio';
-                      if (ValidarCampos.validarCorreo(value))
-                        return 'Ingrese un correo';
+                      if (ValidarCampos.validarRegex(value, 0))
+                        return 'Ingrese un correo valido';
                       return null;
                     },
                   ),
@@ -97,20 +129,35 @@ class LoginState extends State<Login> {
                           top: 10, bottom: 0, right: 20, left: 20),
                       child: TextFormField(
                         controller: _passwordInputTextController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Contraseña',
-                          border: UnderlineInputBorder(
+                          border: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.black),
                           ),
-                          errorBorder: UnderlineInputBorder(
+                          errorBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.red),
                           ),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                hiddenPassword = (!hiddenPassword);
+                                hiddenPassword
+                                    ? iconEye = const Icon(Icons.visibility)
+                                    : iconEye =
+                                        const Icon(Icons.visibility_off);
+                              });
+                            },
+                            alignment: Alignment.bottomCenter,
+                            padding: const EdgeInsets.all(0),
+                            icon: iconEye,
+                          ),
                         ),
-                        obscureText: true,
+                        obscureText: hiddenPassword,
                         validator: (value) {
                           if (value == null || value.isEmpty)
                             return 'Campo vacio';
                           if (value.length < 8) return 'Demasiado corto';
+                          if (value.length > 17) return 'Desmasiado largo';
                           return null;
                         },
                       ),
@@ -223,54 +270,6 @@ class LoginState extends State<Login> {
                     ),
                   ),
                 ),
-                //* login de facebook
-                Container(
-                  margin: const EdgeInsets.only(top: 2, bottom: 1),
-                  width: 300,
-                  height: 40,
-                  alignment: Alignment.center,
-                  child: TextButton(
-                    onPressed: () => {},
-                    style: ButtonStyle(
-                      minimumSize: MaterialStateProperty.resolveWith(
-                          (Set<MaterialState> states) {
-                        return const Size(300, 40);
-                      }),
-                      foregroundColor: MaterialStateProperty.resolveWith(
-                          (Set<MaterialState> states) {
-                        return states.contains(MaterialState.disabled)
-                            ? null
-                            : Colors.white;
-                      }),
-                      backgroundColor: MaterialStateProperty.resolveWith(
-                          (Set<MaterialState> states) {
-                        return states.contains(MaterialState.disabled)
-                            ? null
-                            : Colors.blue;
-                      }),
-                      alignment: Alignment.center,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(right: 2),
-                          child: const Icon(
-                            Icons.facebook,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const Text(
-                          'Continuar con facebook',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
                 const Divider(
                   color: Colors.black45,
                   height: 20,
@@ -364,7 +363,7 @@ class LoginState extends State<Login> {
                         Container(
                           margin: const EdgeInsets.only(right: 2),
                           child: const Icon(
-                            Icons.g_mobiledata_outlined,
+                            Icons.g_mobiledata,
                             color: Colors.white,
                           ),
                         ),
@@ -378,102 +377,11 @@ class LoginState extends State<Login> {
                     ),
                   ),
                 ),
-                //* Registro de facebook
-                Container(
-                  margin: const EdgeInsets.only(top: 0, bottom: 10),
-                  width: 300,
-                  height: 40,
-                  alignment: Alignment.center,
-                  child: TextButton(
-                    onPressed: () => {},
-                    style: ButtonStyle(
-                      minimumSize: MaterialStateProperty.resolveWith(
-                          (Set<MaterialState> states) {
-                        return const Size(300, 40);
-                      }),
-                      foregroundColor: MaterialStateProperty.resolveWith(
-                          (Set<MaterialState> states) {
-                        return states.contains(MaterialState.disabled)
-                            ? null
-                            : Colors.white;
-                      }),
-                      backgroundColor: MaterialStateProperty.resolveWith(
-                          (Set<MaterialState> states) {
-                        return states.contains(MaterialState.disabled)
-                            ? null
-                            : Colors.blue;
-                      }),
-                      alignment: Alignment.center,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(right: 2),
-                          child: const Icon(
-                            Icons.facebook_outlined,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const Text(
-                          'Registrar con facebook',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
               ],
             ),
-            Positioned(
-              bottom: BorderSide.strokeAlignCenter,
-              top: BorderSide.strokeAlignCenter,
-              left: BorderSide.strokeAlignCenter,
-              right: BorderSide.strokeAlignCenter,
-              child: Container(
-                alignment: Alignment.center,
-                width: 100,
-                height: 100,
-                transformAlignment: Alignment.center,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: const Color.fromRGBO(255, 255, 255, 0.9),
-                ),
-                child: Card(
-                  color: Colors.white,
-                  margin: const EdgeInsets.only(
-                    top: 260,
-                    bottom: 260,
-                    left: 100,
-                    right: 100,
-                  ),
-                  elevation: 15,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SpinKitFadingCircle(
-                        itemBuilder: (BuildContext context, int index) {
-                          return DecoratedBox(
-                            position: DecorationPosition.foreground,
-                            decoration: BoxDecoration(
-                              color: index.isEven
-                                  ? const Color.fromRGBO(255, 55, 92, 1.0)
-                                  : Colors.deepPurpleAccent,
-                            ),
-                          );
-                        },
-                      ),
-                      const Text(
-                        'Iniciando sesión',
-                        style: TextStyle(),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+            Visibility(
+              visible: isCharging,
+              child: const PantallaCarga(textoCarga: 'Iniciando sesión'),
             ),
           ],
         ),

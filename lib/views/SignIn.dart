@@ -3,6 +3,7 @@ import 'package:turismo_flutter/config/Encriptar.dart';
 import 'package:turismo_flutter/config/ValidarCampos.dart';
 import 'package:turismo_flutter/views/Login.dart';
 import 'package:turismo_flutter/views/Perfil.dart';
+import 'package:intl/intl.dart';
 
 class SingIn extends StatefulWidget {
   const SingIn({super.key});
@@ -24,6 +25,10 @@ class SingInState extends State<SingIn> {
   var _imagen = "a";
   int indexPage = 0;
   bool isSingIn = true;
+  var hiddenPassword1 = true;
+  var iconEye1 = const Icon(Icons.visibility);
+  var hiddenPassword2 = true;
+  var iconEye2 = const Icon(Icons.visibility);
 
   final List<Widget> widgetsChildren = [
     const Perfil(),
@@ -52,19 +57,19 @@ class SingInState extends State<SingIn> {
     }
   }
 
-  @override
-  void dispose() {
-    _emailInputTextController.dispose();
-    _passwordInputTextController.dispose();
-    _usuarioInputTextController.dispose();
-    _confirmarPasswordInputTextController.dispose();
-    _nombreInputTextController.dispose();
-    _apellidoPaternoInputTextController.dispose();
-    _apellidoPaternoInputTextController.dispose();
-    _emailInputTextController.dispose();
-    _rfcInputTextController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _emailInputTextController.dispose();
+  //   _passwordInputTextController.dispose();
+  //   _usuarioInputTextController.dispose();
+  //   _confirmarPasswordInputTextController.dispose();
+  //   _nombreInputTextController.dispose();
+  //   _apellidoPaternoInputTextController.dispose();
+  //   _apellidoPaternoInputTextController.dispose();
+  //   _emailInputTextController.dispose();
+  //   _rfcInputTextController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +153,7 @@ class SingInState extends State<SingIn> {
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) return 'Campo vacio';
-                if (ValidarCampos.validarCorreo(value))
+                if (ValidarCampos.validarRegex(value, 0)) //*validar correo
                   return 'Ingrese un correo';
                 return null;
               },
@@ -159,22 +164,38 @@ class SingInState extends State<SingIn> {
             margin: const EdgeInsets.fromLTRB(20, 5, 20, 0),
             child: TextFormField(
               controller: _passwordInputTextController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Contraseña',
-                border: UnderlineInputBorder(
+                border: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                 ),
-                errorBorder: UnderlineInputBorder(
+                errorBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.red),
                 ),
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      hiddenPassword1 = (!hiddenPassword1);
+                      hiddenPassword1
+                          ? iconEye1 = const Icon(Icons.visibility)
+                          : iconEye1 = const Icon(Icons.visibility_off);
+                    });
+                  },
+                  alignment: Alignment.bottomCenter,
+                  padding: const EdgeInsets.all(0),
+                  icon: iconEye1,
+                ),
               ),
-              obscureText: true,
+              obscureText: hiddenPassword1,
               validator: (value) {
                 if (value == null || value.isEmpty) return 'Campo vacio';
-                if (value.length < 8)
-                  return 'Debe contener minimo 8 caracteres';
-                if (ValidarCampos.validarPassword(value))
-                  return 'La contraseña debe tener minimo 1 mayuscula, 1 minuscula, 1 numero y 1 cararacter especial';
+                if (ValidarCampos.validarRegex(value, 1))
+                  return "La contraseña debe tener minimo: \n 1 Minusculas \n 1 Mayusculas \n 1 Numero \n 1 Caracter especial !@#\$%^&*-_=+()[]{};:'" +
+                      '"' +
+                      '|<,>./?`~\\ \n Mayor a 8 caracteres\n Menor a 16 caracteres';
+                if (value.toString() !=
+                    _confirmarPasswordInputTextController.text.toString())
+                  return 'Las contraseñas no coinciden';
                 return null;
               },
             ),
@@ -184,22 +205,38 @@ class SingInState extends State<SingIn> {
             margin: const EdgeInsets.fromLTRB(20, 5, 20, 0),
             child: TextFormField(
               controller: _confirmarPasswordInputTextController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Confirmar contraseña',
-                border: UnderlineInputBorder(
+                border: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                 ),
-                errorBorder: UnderlineInputBorder(
+                errorBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.red),
                 ),
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      hiddenPassword2 = (!hiddenPassword2);
+                      hiddenPassword2
+                          ? iconEye2 = const Icon(Icons.visibility)
+                          : iconEye2 = const Icon(Icons.visibility_off);
+                    });
+                  },
+                  alignment: Alignment.bottomCenter,
+                  padding: const EdgeInsets.all(0),
+                  icon: iconEye2,
+                ),
               ),
-              obscureText: true,
+              obscureText: hiddenPassword2,
               validator: (value) {
                 if (value == null || value.isEmpty) return 'Campo vacio';
-                if (value.length < 8)
-                  return 'Debe contener minimo 8 caracteres';
-                if (ValidarCampos.validarPassword(value))
-                  return 'La contraseña debe tener minimo 1 mayuscula, 1 minuscula, 1 numero y 1 cararacter especial';
+                if (ValidarCampos.validarRegex(value, 1))
+                  return "La contraseña debe tener minimo: \n 1 Minusculas \n 1 Mayusculas \n 1 Numero \n 1 Caracter especial !@#\$%^&*-_=+()[]{};:'" +
+                      '"' +
+                      '|<,>./?`~\\ \n Mayor a 8 caracteres\n Menor a 16 caracteres';
+                if (value.toString() !=
+                    _passwordInputTextController.text.toString())
+                  return 'Las contraseñas no coinciden';
                 return null;
               },
             ),
@@ -219,7 +256,10 @@ class SingInState extends State<SingIn> {
                 ),
               ),
               validator: (value) {
-                return (value == null || value.isEmpty) ? 'Campo vacio' : null;
+                if (value == null || value.isEmpty) return 'Campo vacio';
+                if (ValidarCampos.validarRegex(value, 3))
+                  return 'Ingrese solo letras';
+                return null;
               },
             ),
           ),
@@ -238,7 +278,10 @@ class SingInState extends State<SingIn> {
                 ),
               ),
               validator: (value) {
-                return (value == null || value.isEmpty) ? 'Campo vacio' : null;
+                if (value == null || value.isEmpty) return 'Campo vacio';
+                if (ValidarCampos.validarRegex(value, 3))
+                  return 'Ingrese solo letras';
+                return null;
               },
             ),
           ),
@@ -257,16 +300,52 @@ class SingInState extends State<SingIn> {
                 ),
               ),
               validator: (value) {
-                return (value == null || value.isEmpty) ? 'Campo vacio' : null;
+                if (value == null || value.isEmpty) return 'Campo vacio';
+                if (ValidarCampos.validarRegex(value, 3))
+                  return 'Ingrese solo letras';
+                return null;
               },
             ),
           ),
-          //* fecha de nacimiento
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
+          //* Fecha de nacimiento
+          Container(
+            margin: const EdgeInsets.fromLTRB(20, 5, 20, 0),
             child: TextFormField(
               controller: _fechaNacInputTextController,
-              decoration: const InputDecoration(hintText: 'Fecha Nacimiento'),
+              decoration: InputDecoration(
+                labelText: 'Fecha de nacimiento',
+                border: const UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+                errorBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red),
+                ),
+                suffixIcon: IconButton(
+                  onPressed: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                      context: context, //context of current state
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1900),
+                      lastDate: DateTime.now(),
+                    );
+                    if (pickedDate != null) {
+                      String formattedDate =
+                          DateFormat('yyyy-MM-dd').format(pickedDate);
+                      setState(() {
+                        _fechaNacInputTextController.text = formattedDate;
+                      });
+                    }
+                  },
+                  icon: const Icon(Icons.date_range),
+                  alignment: Alignment.bottomCenter,
+                ),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) return 'Campo vacio';
+                if (ValidarCampos.validarRegex(value, 4))
+                  return 'Ingrese una fecha valida con formato yyyy-mm-dd';
+                return null;
+              },
             ),
           ),
           //* RFC
@@ -284,7 +363,10 @@ class SingInState extends State<SingIn> {
                 ),
               ),
               validator: (value) {
-                return (value == null || value.isEmpty) ? 'Campo vacio' : null;
+                if (value == null || value.isEmpty) return null;
+                if (ValidarCampos.validarRegex(value, 5))
+                  return 'Ingrese un RFC valido';
+                return null;
               },
             ),
           ),
