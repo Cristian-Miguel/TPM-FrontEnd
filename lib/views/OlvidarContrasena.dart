@@ -50,7 +50,7 @@ class OlvidarContrasenaState extends State<OlvidarContrasena> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) return 'Campo vacio';
-                    if (ValidarCampos.validarCorreo(value))
+                    if (ValidarCampos.validarRegex(value, 0))
                       return 'Ingrese un correo';
                     return null;
                   },

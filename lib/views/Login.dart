@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:turismo_flutter/components/Alertas.dart';
 import 'package:turismo_flutter/components/PantallaCarga.dart';
+import 'package:turismo_flutter/config/GoogleSignIn.dart';
 import 'package:turismo_flutter/config/ValidarCampos.dart';
 import 'package:turismo_flutter/views/OlvidarContrasena.dart';
 import 'package:turismo_flutter/views/Perfil.dart';
@@ -336,7 +337,7 @@ class LoginState extends State<Login> {
                   height: 40,
                   alignment: Alignment.center,
                   child: TextButton(
-                    onPressed: () => {},
+                    onPressed: singIn,
                     style: ButtonStyle(
                       minimumSize: MaterialStateProperty.resolveWith(
                           (Set<MaterialState> states) {
@@ -387,5 +388,10 @@ class LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  Future singIn() async {
+    final idToken = await GoogleSignInAPI.login();
+    AuthController.postGoogleAuth(idToken);
   }
 }
