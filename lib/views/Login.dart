@@ -35,7 +35,37 @@ class LoginState extends State<Login> {
     const OlvidarContrasena(),
   ];
 
-  getAuthRequest() async {
+  checkResponse(response) async {
+    if (response == 201 || response == 200) {
+      Timer(const Duration(milliseconds: 1500), () {
+        setState(() {
+          isCharging = false;
+          indexPage = 0;
+          isView = true;
+        });
+      });
+    } else if (response >= 500 && response <= 511) {
+      setState(() {
+        isView = false;
+        const Alertas(
+          indexAlerta: 0,
+          textoAlerta: 'Error en el servidor intentelo mas tarde',
+        ).generarAlerta(context);
+      });
+    } else {
+      Timer(const Duration(milliseconds: 1500), () {
+        setState(() {
+          isView = false;
+          const Alertas(
+            indexAlerta: 0,
+            textoAlerta: 'Correo o contraseña incorrecta',
+          ).generarAlerta(context);
+        });
+      });
+    }
+  }
+
+  getAuthRequestLogin() async {
     setState(() {
       isCharging = true;
     });
@@ -44,39 +74,37 @@ class LoginState extends State<Login> {
           _emailInputTextController.text, _passwordInputTextController.text);
       var response = await AuthController.postLogin(
           _emailInputTextController.text, password);
-      if (response == 201 || response == 200) {
-        Timer(const Duration(milliseconds: 1500), () {
-          setState(() {
-            isCharging = false;
-            indexPage = 0;
-            isView = true;
-          });
-        });
-      } else if (response >= 500 && response <= 511) {
-        setState(() {
-          isView = false;
-          const Alertas(
-            indexAlerta: 0,
-            textoAlerta: 'Error en el servidor',
-          ).generarAlerta(context);
-        });
-      } else {
-        Timer(const Duration(milliseconds: 1500), () {
-          setState(() {
-            isView = false;
-            const Alertas(
-              indexAlerta: 0,
-              textoAlerta: 'Correo o contraseña incorrecta',
-            ).generarAlerta(context);
-          });
-        });
-      }
+      checkResponse(response);
       isCharging = false;
     } else {
       setState(() {
         isCharging = false;
       });
     }
+  }
+
+  Future singInGoogle() async {
+    final idToken = await GoogleSignInAPI.login();
+    setState(() {
+      isCharging = true;
+    });
+    var response = await AuthController.postGoogleAuthSignIn(idToken);
+    checkResponse(response);
+    setState(() {
+      isCharging = false;
+    });
+  }
+
+  Future logInGoogle() async {
+    final idToken = await GoogleSignInAPI.login();
+    setState(() {
+      isCharging = true;
+    });
+    var response = await AuthController.postGoogleAuthLogIn(idToken);
+    checkResponse(response);
+    setState(() {
+      isCharging = false;
+    });
   }
 
   @override
@@ -197,11 +225,9 @@ class LoginState extends State<Login> {
                     ),
                   ],
                 ),
-                //* Boton de inici de sesion
+                //* Boton de inicio de sesion
                 TextButton(
-                  onPressed: () => {
-                    getAuthRequest(),
-                  },
+                  onPressed: getAuthRequestLogin,
                   style: ButtonStyle(
                     minimumSize: MaterialStateProperty.resolveWith(
                         (Set<MaterialState> states) {
@@ -233,7 +259,7 @@ class LoginState extends State<Login> {
                   height: 40,
                   alignment: Alignment.center,
                   child: TextButton(
-                    onPressed: () => {},
+                    onPressed: logInGoogle,
                     style: ButtonStyle(
                       minimumSize: MaterialStateProperty.resolveWith(
                           (Set<MaterialState> states) {
@@ -337,7 +363,7 @@ class LoginState extends State<Login> {
                   height: 40,
                   alignment: Alignment.center,
                   child: TextButton(
-                    onPressed: singIn,
+                    onPressed: singInGoogle,
                     style: ButtonStyle(
                       minimumSize: MaterialStateProperty.resolveWith(
                           (Set<MaterialState> states) {
@@ -388,10 +414,5 @@ class LoginState extends State<Login> {
         ),
       ),
     );
-  }
-
-  Future singIn() async {
-    final idToken = await GoogleSignInAPI.login();
-    AuthController.postGoogleAuth(idToken);
   }
 }
