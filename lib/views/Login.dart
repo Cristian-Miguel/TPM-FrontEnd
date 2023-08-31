@@ -71,9 +71,10 @@ class LoginState extends State<Login> {
     });
     if (_formKey.currentState!.validate()) {
       var password = Encriptar.encriptarPassword(
-          _emailInputTextController.text, _passwordInputTextController.text);
+          _emailInputTextController.text.toLowerCase(),
+          _passwordInputTextController.text);
       var response = await AuthController.postLogin(
-          _emailInputTextController.text, password);
+          _emailInputTextController.text.toLowerCase(), password);
       checkResponse(response);
       isCharging = false;
     } else {

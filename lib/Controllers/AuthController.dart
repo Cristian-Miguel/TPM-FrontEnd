@@ -1,13 +1,12 @@
 import 'package:http/http.dart' as http;
+import 'package:turismo_flutter/config/RutasHTTP.dart';
 import 'package:turismo_flutter/middleware/ManageSecureStorage.dart';
 import 'dart:convert';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AuthController {
   static postLogin(var email, var password) async {
     try {
-      const routeWeb = 'http://localhost:4040/Auth/login';
-      var url = Uri.parse(routeWeb);
+      var url = Uri.parse(RutasHTTP.rutaLogin);
       var request = {'Email': '$email', 'Password': '$password'};
       var response = await http.post(
         url,
@@ -30,8 +29,7 @@ class AuthController {
 
   static postSignIn(var infoRegistro) async {
     try {
-      const routeWeb = 'http://localhost:4040/Auth/SignIn';
-      var url = Uri.parse(routeWeb);
+      var url = Uri.parse(RutasHTTP.rutaSignin);
       var response = await http.post(
         url,
         headers: {
@@ -53,9 +51,7 @@ class AuthController {
 
   static postGoogleAuthSignIn(var idToken) async {
     try {
-      var mainRoute = dotenv.env['SERVER_HTTP_WEB'];
-      // final routeWeb = '$mainRoute/Auth/login';
-      var url = Uri.parse('$mainRoute/Auth/Google_SignIn');
+      var url = Uri.parse(RutasHTTP.rutaSigninGoogle);
       var request = {'Auth': '$idToken'};
       var response = await http.post(
         url,
@@ -78,8 +74,7 @@ class AuthController {
 
   static postGoogleAuthLogIn(var idToken) async {
     try {
-      var mainRoute = dotenv.env['SERVER_HTTP_WEB'];
-      var url = Uri.parse('$mainRoute/Auth/Google_SignIn');
+      var url = Uri.parse(RutasHTTP.rutaLoginGoogle);
       var request = {'Auth': '$idToken'};
       var response = await http.post(
         url,

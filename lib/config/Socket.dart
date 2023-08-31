@@ -1,15 +1,15 @@
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart';
+import 'RutasHTTP.dart';
 
 class SocketManage {
-  static const ruta = 'http://localhost:4040';
-  // static const ruta = 'http://10.0.2.2:4040';
-
   static connectServer() {
     Socket socket = io(
-      ruta,
+      RutasHTTP.url,
       OptionBuilder().setTransports(['websocket']).build(),
     );
     socket.connect();
+    socket.on('recibir-mensajes', (payload) => {print(payload)});
+    socket.disconnect();
   }
 }
