@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:turismo_flutter/middleware/ManageSecureStorage.dart';
-import 'package:turismo_flutter/views/Login.dart';
+import 'package:turismo_flutter/views/user/login.dart';
 
-class PerfilAdmin extends StatefulWidget {
-  const PerfilAdmin({super.key});
+class Enterprice extends StatefulWidget {
+  const Enterprice({super.key});
 
   @override
-  State<PerfilAdmin> createState() => _PerfilAdminState();
+  State<Enterprice> createState() => _EnterpriceState();
 }
 
-class _PerfilAdminState extends State<PerfilAdmin> {
+class _EnterpriceState extends State<Enterprice> {
   var isCloseSession = false;
 
   @override
   Widget build(BuildContext context) {
-    return isCloseSession ? const Login() : perfilAdminView();
+    return isCloseSession ? const Login() : perfilEmpresaView();
   }
 
-  perfilAdminView() {
+  perfilEmpresaView() {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -25,7 +25,6 @@ class _PerfilAdminState extends State<PerfilAdmin> {
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
-        elevation: 10,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 100.0, horizontal: 50.0),
@@ -36,7 +35,7 @@ class _PerfilAdminState extends State<PerfilAdmin> {
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
               child: Text(
-                'Perfil Administrador',
+                'Perfil Empresa',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),

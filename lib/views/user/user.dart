@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:turismo_flutter/Controllers/UsuarioController.dart';
+import 'package:turismo_flutter/controllers/UsuarioController.dart';
 import 'package:turismo_flutter/middleware/ManageSecureStorage.dart';
-import 'package:turismo_flutter/views/Login.dart';
+import 'package:turismo_flutter/views/user/Login.dart';
 
-class PerfilUsuario extends StatefulWidget {
-  const PerfilUsuario({super.key});
+class User extends StatefulWidget {
+  const User({super.key});
   @override
-  State<PerfilUsuario> createState() => _PerfilUsuarioState();
+  State<User> createState() => _UserState();
 }
 
-class _PerfilUsuarioState extends State<PerfilUsuario> {
+class _UserState extends State<User> {
   var isCloseSession = false;
-  var usuario = '';
-  var nombreCompleto = '';
+  var user = '';
+  var fullName = '';
 
   getInfoUser() async {
     var response = await UsuarioController.getUsuario();
     setState(() {
-      usuario = response['Usuario'];
-      nombreCompleto =
+      user = response['Usuario'];
+      fullName =
           "${response['Nombre']} ${response['ApellidoPaterno']} ${response['ApellidoMaterno']}";
     });
   }
@@ -31,10 +31,10 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
 
   @override
   Widget build(BuildContext context) {
-    return isCloseSession ? const Login() : perfilUsuarioView();
+    return isCloseSession ? const Login() : profileUserView();
   }
 
-  perfilUsuarioView() {
+  profileUserView() {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -84,14 +84,14 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        nombreCompleto,
+                        fullName,
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                           color: Colors.black87,
                         ),
                       ),
                       Text(
-                        usuario,
+                        user,
                         textAlign: TextAlign.start,
                         style: const TextStyle(color: Colors.black54),
                       ),

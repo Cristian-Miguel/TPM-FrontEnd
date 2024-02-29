@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:turismo_flutter/config/ValidarCampos.dart';
-import 'package:turismo_flutter/views/Login.dart';
+import 'package:turismo_flutter/config/constants/error_message.dart';
+import 'package:turismo_flutter/config/constants/validate_field.dart';
+import 'package:turismo_flutter/views/user/login.dart';
 
-class OlvidarContrasena extends StatefulWidget {
-  const OlvidarContrasena({super.key});
+class ForgetPassword extends StatefulWidget {
+  const ForgetPassword({super.key});
   @override
-  State<OlvidarContrasena> createState() => OlvidarContrasenaState();
+  State<ForgetPassword> createState() => ForgetPasswordState();
 }
 
-class OlvidarContrasenaState extends State<OlvidarContrasena> {
+class ForgetPasswordState extends State<ForgetPassword> {
   final _emailInputTextController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool isExit = false;
@@ -31,7 +32,7 @@ class OlvidarContrasenaState extends State<OlvidarContrasena> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 220, 0, 20),
                 child: Text(
-                  'Restablecer contraseña',
+                  'Reset password',
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ),
@@ -40,7 +41,7 @@ class OlvidarContrasenaState extends State<OlvidarContrasena> {
                 child: TextFormField(
                   controller: _emailInputTextController,
                   decoration: const InputDecoration(
-                    labelText: 'Ingrese su correo',
+                    labelText: 'Email',
                     border: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                     ),
@@ -49,10 +50,18 @@ class OlvidarContrasenaState extends State<OlvidarContrasena> {
                     ),
                   ),
                   validator: (value) {
-                    if (value == null || value.isEmpty) return 'Campo vacio';
-                    if (ValidarCampos.validarRegex(value, 0))
-                      return 'Ingrese un correo';
-                    return null;
+                    var validation = [
+                      [
+                        (value == null || value.isEmpty),
+                        ErrorMessage.emptyField
+                      ],
+                      [
+                        ValidateField.validateRegex(value, RegexField.email),
+                        ErrorMessage.notValidEmail
+                      ]
+                    ];
+
+                    return ValidateField.printError(validation);
                   },
                 ),
               ),
@@ -86,7 +95,7 @@ class OlvidarContrasenaState extends State<OlvidarContrasena> {
                               : Colors.transparent;
                         }),
                       ),
-                      child: const Text('Omitir'),
+                      child: const Text('Omit'),
                     ),
                   ),
                   //* Boton restablecer
@@ -117,7 +126,7 @@ class OlvidarContrasenaState extends State<OlvidarContrasena> {
                               : const Color.fromRGBO(255, 55, 92, 1.0);
                         }),
                       ),
-                      child: const Text('Restablecer'),
+                      child: const Text('Reset'),
                     ),
                   ),
                 ],

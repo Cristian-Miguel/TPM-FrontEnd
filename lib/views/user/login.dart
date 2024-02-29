@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:turismo_flutter/components/Alertas.dart';
 import 'package:turismo_flutter/components/PantallaCarga.dart';
 import 'package:turismo_flutter/config/GoogleSignIn.dart';
-import 'package:turismo_flutter/config/ValidarCampos.dart';
-import 'package:turismo_flutter/views/OlvidarContrasena.dart';
-import 'package:turismo_flutter/views/Perfil.dart';
-import 'package:turismo_flutter/Controllers/AuthController.dart';
+import 'package:turismo_flutter/config/constants/error_message.dart';
+import 'package:turismo_flutter/config/constants/validate_field.dart';
+import 'package:turismo_flutter/views/user/forget_password.dart';
+import 'package:turismo_flutter/views/user/profile.dart';
+import 'package:turismo_flutter/controllers/AuthController.dart';
 import 'package:turismo_flutter/config/Encriptar.dart';
-import 'package:turismo_flutter/views/SignIn.dart';
+import 'package:turismo_flutter/views/user/sign_in.dart';
 import 'dart:async';
 
 class Login extends StatefulWidget {
@@ -22,7 +23,7 @@ class LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   var indexPage = 0;
   var response = 0;
-  var errorMensaje = '';
+  var errorMenssage = '';
   var isView = false;
   var isCharging = false;
   var isError = false;
@@ -30,9 +31,9 @@ class LoginState extends State<Login> {
   var iconEye = const Icon(Icons.visibility);
 
   final List<Widget> listaViews = [
-    const Perfil(),
-    const SingIn(),
-    const OlvidarContrasena(),
+    const Profile(),
+    const SignIn(),
+    const ForgetPassword(),
   ];
 
   checkResponse(response) async {
@@ -126,7 +127,7 @@ class LoginState extends State<Login> {
                 Container(
                   margin: const EdgeInsets.only(top: 100, bottom: 5),
                   child: Text(
-                    'Iniciar sesión',
+                    'Login',
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                 ),
@@ -136,7 +137,7 @@ class LoginState extends State<Login> {
                   child: TextFormField(
                     controller: _emailInputTextController,
                     decoration: const InputDecoration(
-                      labelText: 'Correo',
+                      labelText: 'Email',
                       border: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.black),
                       ),
@@ -145,10 +146,18 @@ class LoginState extends State<Login> {
                       ),
                     ),
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Campo vacio';
-                      if (ValidarCampos.validarRegex(value, 0))
-                        return 'Ingrese un correo valido';
-                      return null;
+                      var validation = [
+                        [
+                          (value == null || value.isEmpty),
+                          ErrorMessage.emptyField
+                        ],
+                        [
+                          ValidateField.validateRegex(value, RegexField.email),
+                          ErrorMessage.notValidEmail
+                        ]
+                      ];
+
+                      return ValidateField.printError(validation);
                     },
                   ),
                 ),
@@ -221,7 +230,7 @@ class LoginState extends State<Login> {
                                 : Colors.transparent;
                           }),
                         ),
-                        child: const Text('¿Olvidaste tu contraseña?'),
+                        child: const Text('Forgot your password?'),
                       ),
                     ),
                   ],
@@ -247,11 +256,11 @@ class LoginState extends State<Login> {
                           : const Color.fromRGBO(255, 55, 92, 1.0);
                     }),
                   ),
-                  child: const Text('Iniciar sesión'),
+                  child: const Text('Login'),
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 10),
-                  child: const Text('- o -'),
+                  child: const Text('- or -'),
                 ),
                 //* login de google
                 Container(
@@ -289,7 +298,7 @@ class LoginState extends State<Login> {
                           color: Colors.white,
                         ),
                         Text(
-                          'Continuar con google',
+                          'continue to Google',
                           style: TextStyle(
                             color: Colors.white,
                           ),

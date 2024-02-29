@@ -12,6 +12,7 @@ import 'package:turismo_flutter/views/Reservas.dart';
 
 class Plantilla extends StatefulWidget {
   const Plantilla({super.key});
+  @override
   State<Plantilla> createState() => PlantillaState();
 }
 
