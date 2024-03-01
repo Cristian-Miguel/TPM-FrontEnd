@@ -20,7 +20,7 @@ class Error {
             ),
           ],
         ),
-        backgroundColor: Colors.amber,
+        backgroundColor: Colors.red,
       ),
     );
   }
