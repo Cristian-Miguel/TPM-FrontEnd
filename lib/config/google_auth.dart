@@ -1,14 +1,14 @@
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:turismo_flutter/config/constants/index.dart';
 
 class GoogleSignInAPI {
   static final _googleSignIn = GoogleSignIn(
     clientId: dotenv.env['GOOGLE_CLIENT_ID'],
     scopes: [
       'email',
-      'https://www.googleapis.com/auth/userinfo.email',
-      'https://www.googleapis.com/auth/userinfo.profile',
-      // 'https://www.googleapis.com/auth/user.birthday.read',
+      MainConstant.apiGoogleEmailUrl,
+      MainConstant.apiGoogleProfileUrl,
     ],
   );
 

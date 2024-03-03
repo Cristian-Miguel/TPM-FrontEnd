@@ -1,15 +1,17 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:turismo_flutter/components/Alertas.dart';
-import 'package:turismo_flutter/components/PantallaCarga.dart';
-import 'package:turismo_flutter/config/GoogleSignIn.dart';
+import 'package:turismo_flutter/config/encryptor.dart';
+import 'package:turismo_flutter/config/google_auth.dart';
+import 'package:turismo_flutter/config/constants/index.dart';
 import 'package:turismo_flutter/config/constants/error_message.dart';
 import 'package:turismo_flutter/config/constants/validate_field.dart';
+import 'package:turismo_flutter/controllers/auth/login_controller.dart';
+import 'package:turismo_flutter/controllers/auth/google_auth_controller.dart';
+import 'package:turismo_flutter/components/alerts/index.dart';
+import 'package:turismo_flutter/components/others/load_screen.dart';
 import 'package:turismo_flutter/views/user/forget_password.dart';
 import 'package:turismo_flutter/views/user/profile.dart';
-import 'package:turismo_flutter/controllers/AuthController.dart';
-import 'package:turismo_flutter/config/Encriptar.dart';
-import 'package:turismo_flutter/views/user/sign_in.dart';
-import 'dart:async';
+import 'package:turismo_flutter/views/user/sign_up.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -30,13 +32,13 @@ class LoginState extends State<Login> {
   var hiddenPassword = true;
   var iconEye = const Icon(Icons.visibility);
 
-  final List<Widget> listaViews = [
+  final List<Widget> _listaViews = [
     const Profile(),
-    const SignIn(),
+    const SignUp(),
     const ForgetPassword(),
   ];
 
-  checkResponse(response) async {
+  _checkResponse(response) async {
     if (response == 201 || response == 200) {
       Timer(const Duration(milliseconds: 1500), () {
         setState(() {
@@ -48,25 +50,25 @@ class LoginState extends State<Login> {
     } else if (response >= 500 && response <= 511) {
       setState(() {
         isView = false;
-        const Alertas(
-          indexAlerta: 0,
-          textoAlerta: 'Error en el servidor intentelo mas tarde',
-        ).generarAlerta(context);
+        Alerts(
+          ErrorMessage.genericError_500,
+          MainConstant.errorAlert,
+        ).generateAlerts(context);
       });
     } else {
       Timer(const Duration(milliseconds: 1500), () {
         setState(() {
           isView = false;
-          const Alertas(
-            indexAlerta: 0,
-            textoAlerta: 'Correo o contraseña incorrecta',
-          ).generarAlerta(context);
+          Alerts(
+            ErrorMessage.failPassword,
+            MainConstant.errorAlert,
+          ).generateAlerts(context);
         });
       });
     }
   }
 
-  getAuthRequestLogin() async {
+  _getAuthRequestLogin() async {
     setState(() {
       isCharging = true;
     });
@@ -74,9 +76,9 @@ class LoginState extends State<Login> {
       var password = Encriptar.encriptarPassword(
           _emailInputTextController.text.toLowerCase(),
           _passwordInputTextController.text);
-      var response = await AuthController.postLogin(
+      var response = await LoginController.postLogin(
           _emailInputTextController.text.toLowerCase(), password);
-      checkResponse(response);
+      _checkResponse(response);
       isCharging = false;
     } else {
       setState(() {
@@ -85,25 +87,25 @@ class LoginState extends State<Login> {
     }
   }
 
-  Future singInGoogle() async {
+  Future _singUpGoogle() async {
     final idToken = await GoogleSignInAPI.login();
     setState(() {
       isCharging = true;
     });
-    var response = await AuthController.postGoogleAuthSignIn(idToken);
-    checkResponse(response);
+    var response = await GoogleAuthController.postGoogleAuthSignUp(idToken);
+    _checkResponse(response);
     setState(() {
       isCharging = false;
     });
   }
 
-  Future logInGoogle() async {
+  Future _signInGoogle() async {
     final idToken = await GoogleSignInAPI.login();
     setState(() {
       isCharging = true;
     });
-    var response = await AuthController.postGoogleAuthLogIn(idToken);
-    checkResponse(response);
+    var response = await GoogleAuthController.postGoogleAuthSignIn(idToken);
+    _checkResponse(response);
     setState(() {
       isCharging = false;
     });
@@ -111,10 +113,10 @@ class LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return isView ? listaViews[indexPage] : logIn();
+    return isView ? _listaViews[indexPage] : authPage();
   }
 
-  logIn() {
+  authPage() {
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
@@ -169,7 +171,7 @@ class LoginState extends State<Login> {
                       child: TextFormField(
                         controller: _passwordInputTextController,
                         decoration: InputDecoration(
-                          labelText: 'Contraseña',
+                          labelText: 'Password',
                           border: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.black),
                           ),
@@ -193,10 +195,13 @@ class LoginState extends State<Login> {
                         ),
                         obscureText: hiddenPassword,
                         validator: (value) {
-                          if (value == null || value.isEmpty)
-                            return 'Campo vacio';
-                          if (value.length < 8) return 'Demasiado corto';
-                          if (value.length > 17) return 'Desmasiado largo';
+                          if (value == null || value.isEmpty) {
+                            return ErrorMessage.emptyField;
+                          } else if (value.length < 8) {
+                            return ErrorMessage.shortPassword;
+                          } else if (value.length > 17) {
+                            return ErrorMessage.largePassword;
+                          }
                           return null;
                         },
                       ),
@@ -237,7 +242,7 @@ class LoginState extends State<Login> {
                 ),
                 //* Boton de inicio de sesion
                 TextButton(
-                  onPressed: getAuthRequestLogin,
+                  onPressed: _getAuthRequestLogin,
                   style: ButtonStyle(
                     minimumSize: MaterialStateProperty.resolveWith(
                         (Set<MaterialState> states) {
@@ -269,7 +274,7 @@ class LoginState extends State<Login> {
                   height: 40,
                   alignment: Alignment.center,
                   child: TextButton(
-                    onPressed: logInGoogle,
+                    onPressed: _signInGoogle,
                     style: ButtonStyle(
                       minimumSize: MaterialStateProperty.resolveWith(
                           (Set<MaterialState> states) {
@@ -298,7 +303,7 @@ class LoginState extends State<Login> {
                           color: Colors.white,
                         ),
                         Text(
-                          'continue to Google',
+                          'Sign up to Google',
                           style: TextStyle(
                             color: Colors.white,
                           ),
@@ -357,7 +362,7 @@ class LoginState extends State<Login> {
                           ),
                         ),
                         const Text(
-                          'Registrar con Correo',
+                          'Create account',
                           style: TextStyle(
                             color: Colors.white,
                           ),
@@ -373,7 +378,7 @@ class LoginState extends State<Login> {
                   height: 40,
                   alignment: Alignment.center,
                   child: TextButton(
-                    onPressed: singInGoogle,
+                    onPressed: _singUpGoogle,
                     style: ButtonStyle(
                       minimumSize: MaterialStateProperty.resolveWith(
                           (Set<MaterialState> states) {
@@ -405,7 +410,7 @@ class LoginState extends State<Login> {
                           ),
                         ),
                         const Text(
-                          'Registrar con google',
+                          '>>> Create new account with google <<<',
                           style: TextStyle(
                             color: Colors.white,
                           ),
@@ -418,7 +423,7 @@ class LoginState extends State<Login> {
             ),
             Visibility(
               visible: isCharging,
-              child: const PantallaCarga(textoCarga: 'Iniciando sesión'),
+              child: const LoadScreen(loadText: 'logger'),
             ),
           ],
         ),

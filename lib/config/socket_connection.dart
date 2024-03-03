@@ -1,11 +1,10 @@
-// import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart';
-import 'RutasHTTP.dart';
+import 'package:turismo_flutter/config/constants/https_routes.dart';
 
 class SocketManage {
   static connectServer() {
     Socket socket = io(
-      RutasHTTP.url,
+      RutasHTTP,
       OptionBuilder().setTransports(['websocket']).build(),
     );
     socket.connect();

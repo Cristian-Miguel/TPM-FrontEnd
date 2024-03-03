@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:turismo_flutter/controllers/UsuarioController.dart';
-import 'package:turismo_flutter/middleware/ManageSecureStorage.dart';
+import 'package:turismo_flutter/controllers/user/user_controller.dart';
+import 'package:turismo_flutter/middleware/manage_secure_storage.dart';
 import 'package:turismo_flutter/views/user/Login.dart';
 
 class User extends StatefulWidget {
@@ -15,11 +15,10 @@ class _UserState extends State<User> {
   var fullName = '';
 
   getInfoUser() async {
-    var response = await UsuarioController.getUsuario();
+    var response = await UserController.getUser();
     setState(() {
-      user = response['Usuario'];
-      fullName =
-          "${response['Nombre']} ${response['ApellidoPaterno']} ${response['ApellidoMaterno']}";
+      user = response['User'];
+      fullName = "${response['Name']} ${response['LastName']}";
     });
   }
 
@@ -38,7 +37,7 @@ class _UserState extends State<User> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Perfil",
+          "Profile",
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
@@ -112,7 +111,7 @@ class _UserState extends State<User> {
                 Container(
                   margin: const EdgeInsets.only(top: 25, bottom: 20, left: 10),
                   child: const Text(
-                    "Configuración de la cuenta",
+                    "Account Settings",
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w500,
@@ -128,7 +127,7 @@ class _UserState extends State<User> {
                   ),
                   child: ListTile(
                     leading: const Icon(Icons.account_circle_outlined),
-                    title: const Text('Información  personal'),
+                    title: const Text('Personal information'),
                     trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () {},
                   ),
@@ -142,7 +141,7 @@ class _UserState extends State<User> {
                   ),
                   child: ListTile(
                     leading: const Icon(Icons.money_sharp),
-                    title: const Text('Pagos y cobros'),
+                    title: const Text('Payments and receipts'),
                     trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () {},
                   ),
@@ -156,7 +155,7 @@ class _UserState extends State<User> {
                   ),
                   child: ListTile(
                     leading: const Icon(Icons.add_alert),
-                    title: const Text('Notificaciones'),
+                    title: const Text('Notifications'),
                     trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () {},
                   ),
@@ -170,7 +169,7 @@ class _UserState extends State<User> {
                   ),
                   child: ListTile(
                     leading: const Icon(Icons.announcement_sharp),
-                    title: const Text('Privacidad'),
+                    title: const Text('Privacy'),
                     trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () {},
                   ),
@@ -182,7 +181,7 @@ class _UserState extends State<User> {
                 Container(
                   margin: const EdgeInsets.only(top: 15, bottom: 15, left: 10),
                   child: const Text(
-                    "Asistencia",
+                    "Support",
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       fontSize: 22,
@@ -199,7 +198,7 @@ class _UserState extends State<User> {
                   ),
                   child: ListTile(
                       leading: const Icon(Icons.account_balance),
-                      title: const Text('Como funciona ExploraMich'),
+                      title: const Text('How ExploraMich works'),
                       trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () => {
                             // Navigator.of(context).pop(),
@@ -214,7 +213,7 @@ class _UserState extends State<User> {
                   ),
                   child: ListTile(
                       leading: const Icon(Icons.money_sharp),
-                      title: const Text('Comunícate con el servicio de ayuda'),
+                      title: const Text('Contact the helpdesk'),
                       trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () => {
                             // Navigator.of(context).pop(),
@@ -229,7 +228,7 @@ class _UserState extends State<User> {
                   ),
                   child: ListTile(
                       leading: const Icon(Icons.help),
-                      title: const Text('Recibir Ayuda'),
+                      title: const Text('Get help'),
                       trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () => {
                             // Navigator.of(context).pop(),
@@ -244,7 +243,7 @@ class _UserState extends State<User> {
                   ),
                   child: ListTile(
                     leading: const Icon(Icons.app_registration),
-                    title: const Text('Envía Tus comentarios'),
+                    title: const Text('Send us your comments'),
                     trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () => {
                       // Navigator.of(context).pop(),

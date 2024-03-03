@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:turismo_flutter/config/Socket.dart';
+import 'package:turismo_flutter/config/socket_connection.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

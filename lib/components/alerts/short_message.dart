@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 
-class Error {
+class GenericMessage {
+  final IconData icon;
+  final Color color;
   final String textAlert;
 
-  Error(this.textAlert);
+  GenericMessage(this.icon, this.color, this.textAlert);
 
-  getErrorFormat(context) {
+  getMessageFormat(context) {
     return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
           children: [
-            const Icon(
-              Icons.warning_amber,
+            Icon(
+              icon,
               color: Colors.white,
             ),
             Padding(
@@ -20,7 +22,7 @@ class Error {
             ),
           ],
         ),
-        backgroundColor: Colors.amber,
+        backgroundColor: color,
       ),
     );
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:turismo_flutter/middleware/ManageSecureStorage.dart';
+import 'package:turismo_flutter/middleware/manage_secure_storage.dart';
 import 'package:turismo_flutter/views/user/login.dart';
 
 class Enterprice extends StatefulWidget {
@@ -21,7 +21,7 @@ class _EnterpriceState extends State<Enterprice> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Perfil",
+          "Profile",
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
@@ -35,7 +35,7 @@ class _EnterpriceState extends State<Enterprice> {
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
               child: Text(
-                'Perfil Empresa',
+                'Enterprice profile',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
@@ -49,7 +49,7 @@ class _EnterpriceState extends State<Enterprice> {
                     isCloseSession = true;
                   }),
                 },
-                child: const Text("cerrar sesion"),
+                child: const Text("log out"),
               ),
             ),
           ],

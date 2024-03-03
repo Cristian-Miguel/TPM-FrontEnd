@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:turismo_flutter/components/alerts/short_message.dart';
 
 class Alerts {
   final String textAlert;
@@ -9,77 +10,18 @@ class Alerts {
   generateAlerts(context) {
     switch (indexAlert) {
       case 0: //* Alerta de error
-        return ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                const Icon(
-                  Icons.error_outline,
-                  color: Colors.white,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 4),
-                  child: Text(textAlert),
-                ),
-              ],
-            ),
-            backgroundColor: Colors.red,
-          ),
-        );
+        return GenericMessage(Icons.error_outline, Colors.red, textAlert)
+            .getMessageFormat(context);
       case 1: //* warning
-        return ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                const Icon(
-                  Icons.warning_amber,
-                  color: Colors.white,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 4),
-                  child: Text(textAlert),
-                ),
-              ],
-            ),
-            backgroundColor: Colors.amber,
-          ),
-        );
+        return GenericMessage(Icons.warning_amber, Colors.amber, textAlert)
+            .getMessageFormat(context);
       case 2: //* info
-        return ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                const Icon(
-                  Icons.info_outline,
-                  color: Colors.white,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 4),
-                  child: Text(textAlert),
-                ),
-              ],
-            ),
-            backgroundColor: Colors.black54,
-          ),
-        );
+        return GenericMessage(Icons.info_outline, Colors.black54, textAlert)
+            .getMessageFormat(context);
       case 3: //* success
-        return ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                const Icon(
-                  Icons.check_circle_outline,
-                  color: Colors.white,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 4),
-                  child: Text(textAlert),
-                ),
-              ],
-            ),
-            backgroundColor: Colors.lightGreen,
-          ),
-        );
+        return GenericMessage(
+                Icons.check_circle_outline, Colors.lightGreen, textAlert)
+            .getMessageFormat(context);
       default:
         return null;
     }

@@ -1,22 +1,23 @@
+import 'dart:async';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:turismo_flutter/config/encryptor.dart';
+import 'package:turismo_flutter/config/constants/index.dart';
 import 'package:turismo_flutter/config/constants/validate_field.dart';
-import 'package:turismo_flutter/controllers/AuthController.dart';
-import 'package:turismo_flutter/config/Encriptar.dart';
 import 'package:turismo_flutter/config/constants/error_message.dart';
+import 'package:turismo_flutter/controllers/auth/sign_up_controller.dart';
+import 'package:turismo_flutter/components/others/load_screen.dart';
+import 'package:turismo_flutter/components/alerts/index.dart';
 import 'package:turismo_flutter/views/user/login.dart';
 import 'package:turismo_flutter/views/user/profile.dart';
-import 'package:turismo_flutter/components/PantallaCarga.dart';
-import 'package:intl/intl.dart';
-import 'package:turismo_flutter/components/Alertas.dart';
-import 'dart:async';
 
-class SignIn extends StatefulWidget {
-  const SignIn({super.key});
+class SignUp extends StatefulWidget {
+  const SignUp({super.key});
   @override
-  State<SignIn> createState() => _SignInState();
+  State<SignUp> createState() => _SignUpState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignUpState extends State<SignUp> {
   final _emailInputTextController = TextEditingController();
   final _confirmPasswordInputTextController = TextEditingController();
   final _passwordInputTextController = TextEditingController();
@@ -40,7 +41,7 @@ class _SignInState extends State<SignIn> {
     const Login(),
   ];
 
-  checkResponse(response) async {
+  _checkResponse(response) async {
     if (response == 201 || response == 200) {
       Timer(const Duration(milliseconds: 1500), () {
         setState(() {
@@ -50,24 +51,24 @@ class _SignInState extends State<SignIn> {
       });
     } else if (response >= 500 && response <= 511) {
       setState(() {
-        const Alertas(
-          indexAlerta: 0,
-          textoAlerta: 'Error en el servidor intentelo mas tarde',
-        ).generarAlerta(context);
+        Alerts(
+          ErrorMessage.genericError_500,
+          MainConstant.errorAlert,
+        ).generateAlerts(context);
       });
     } else {
       Timer(const Duration(milliseconds: 1500), () {
         setState(() {
-          const Alertas(
-            indexAlerta: 0,
-            textoAlerta: 'Error en algun campo',
-          ).generarAlerta(context);
+          Alerts(
+            ErrorMessage.fieldError,
+            MainConstant.errorAlert,
+          ).generateAlerts(context);
         });
       });
     }
   }
 
-  postRegistro() async {
+  _postSignUp() async {
     setState(() {
       isCharging = true;
     });
@@ -84,8 +85,8 @@ class _SignInState extends State<SignIn> {
         "RFC": _rfcInputTextController.text,
         "Image": _image
       };
-      var response = await AuthController.postSignIn(registroJson);
-      checkResponse(response);
+      var response = await SignUpController.postSignUp(registroJson);
+      _checkResponse(response);
     }
     setState(() {
       isCharging = false;
@@ -94,10 +95,10 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return isSingIn ? singInView() : widgetsChildren[indexPage];
+    return isSingIn ? singUpView() : widgetsChildren[indexPage];
   }
 
-  singInView() {
+  singUpView() {
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
@@ -466,7 +467,7 @@ class _SignInState extends State<SignIn> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30, 20, 5, 20),
                     child: TextButton(
-                      onPressed: postRegistro,
+                      onPressed: _postSignUp,
                       style: ButtonStyle(
                         minimumSize: MaterialStateProperty.resolveWith(
                             (Set<MaterialState> states) {
@@ -494,8 +495,8 @@ class _SignInState extends State<SignIn> {
           ),
           Visibility(
             visible: isCharging,
-            child: const PantallaCarga(
-                textoCarga: 'Wait a minute, we charge the data'),
+            child:
+                const LoadScreen(loadText: 'Wait a minute, we charge the data'),
           ),
         ]),
       ),

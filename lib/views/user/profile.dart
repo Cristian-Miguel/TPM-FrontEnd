@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:turismo_flutter/views/user/login.dart';
-import 'package:turismo_flutter/middleware/JWT.dart';
-import 'package:turismo_flutter/middleware/VerificarRol.dart';
+import 'package:turismo_flutter/middleware/jwt_manage.dart';
+import 'package:turismo_flutter/middleware/check_rol.dart';
 import 'package:turismo_flutter/views/user/administrator.dart';
 import 'package:turismo_flutter/views/user/enterprice.dart';
 import 'package:turismo_flutter/views/user/user.dart';
@@ -17,10 +17,10 @@ class ProfileState extends State<Profile> {
   int position = 3;
 
   getValidaciones() async {
-    var isValidToken = await JWT.tokenValido();
+    var isValidToken = await JwtManage.validToken();
     int position = 3;
     if (isValidToken.toString() == 'true') {
-      var rol = await VerificarRol.validarRol();
+      var rol = await CheckRol.validRol();
       switch (rol.toString()) {
         case '1':
           position = 0;

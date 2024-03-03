@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:turismo_flutter/middleware/ManageSecureStorage.dart';
+import 'package:turismo_flutter/middleware/manage_secure_storage.dart';
 import 'package:turismo_flutter/views/user/login.dart';
 
 class Administrator extends StatefulWidget {
@@ -21,7 +21,7 @@ class _AdministratorState extends State<Administrator> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Perfil",
+          "Profile",
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
@@ -36,7 +36,7 @@ class _AdministratorState extends State<Administrator> {
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
               child: Text(
-                'Perfil Administrador',
+                'Admin profile',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
@@ -50,7 +50,7 @@ class _AdministratorState extends State<Administrator> {
                     isCloseSession = true;
                   }),
                 },
-                child: const Text("cerrar sesion"),
+                child: const Text("Log out"),
               ),
             ),
           ],
