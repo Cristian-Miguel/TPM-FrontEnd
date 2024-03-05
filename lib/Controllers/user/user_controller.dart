@@ -5,7 +5,7 @@ import 'dart:convert';
 
 class UserController {
   static getUser() async {
-    var url = Uri.parse(RutasHTTP.rutaInfoUsuario);
+    var url = Uri.parse(RoutesHTTP.rutaInfoUsuario);
     var token = await ManageSecureStorage.getToken();
     var response = await http.get(url, headers: {
       "Content-Type": "application/json; charset=utf-8",

@@ -1,6 +1,6 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-class RutasHTTP {
+class RoutesHTTP {
   static final String url = dotenv.env['ENVIROMENT'].toString() == 'DEVELOP'
       ? dotenv.env['API_SERVER_WEB_DEVELOP'].toString()
       : dotenv.env['API_SERVER_WEB_PRODUCTION'].toString();

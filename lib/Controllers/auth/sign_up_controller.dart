@@ -6,7 +6,7 @@ import 'dart:convert';
 class SignUpController {
   static postSignUp(var infoRegistro) async {
     try {
-      var url = Uri.parse(RutasHTTP.rutaSignin);
+      var url = Uri.parse(RoutesHTTP.rutaSignin);
       var response = await http.post(
         url,
         headers: {

@@ -6,7 +6,7 @@ import 'dart:convert';
 class GoogleAuthController {
   static postGoogleAuthSignUp(var idToken) async {
     try {
-      var url = Uri.parse(RutasHTTP.rutaSigninGoogle);
+      var url = Uri.parse(RoutesHTTP.rutaSigninGoogle);
       var request = {'Auth': '$idToken'};
       var response = await http.post(
         url,
@@ -29,7 +29,7 @@ class GoogleAuthController {
 
   static postGoogleAuthSignIn(var idToken) async {
     try {
-      var url = Uri.parse(RutasHTTP.rutaLoginGoogle);
+      var url = Uri.parse(RoutesHTTP.rutaLoginGoogle);
       var request = {'Auth': '$idToken'};
       var response = await http.post(
         url,

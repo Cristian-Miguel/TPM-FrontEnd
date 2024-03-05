@@ -6,7 +6,7 @@ import 'dart:convert';
 class LoginController {
   static postLogin(var email, var password) async {
     try {
-      var url = Uri.parse(RutasHTTP.rutaLogin);
+      var url = Uri.parse(RoutesHTTP.rutaLogin);
       var request = {'Email': '$email', 'Password': '$password'};
       var response = await http.post(
         url,
