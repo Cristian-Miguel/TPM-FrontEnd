@@ -73,7 +73,7 @@ class _SignUpState extends State<SignUp> {
       isCharging = true;
     });
     if (_formKey.currentState!.validate()) {
-      var encriptado = Encriptar.encriptarPassword(
+      var encriptado = Encryptor.encriptarPassword(
           _emailInputTextController.text, _passwordInputTextController.text);
       var registroJson = {
         "Email": _emailInputTextController.text,

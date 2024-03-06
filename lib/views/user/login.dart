@@ -73,7 +73,7 @@ class LoginState extends State<Login> {
       isCharging = true;
     });
     if (_formKey.currentState!.validate()) {
-      var password = Encriptar.encriptarPassword(
+      var password = Encryptor.encriptarPassword(
           _emailInputTextController.text.toLowerCase(),
           _passwordInputTextController.text);
       var response = await LoginController.postLogin(
@@ -88,7 +88,7 @@ class LoginState extends State<Login> {
   }
 
   Future _singUpGoogle() async {
-    final idToken = await GoogleSignInAPI.login();
+    final idToken = await GoogleAuthAPI.login();
     setState(() {
       isCharging = true;
     });
@@ -100,7 +100,7 @@ class LoginState extends State<Login> {
   }
 
   Future _signInGoogle() async {
-    final idToken = await GoogleSignInAPI.login();
+    final idToken = await GoogleAuthAPI.login();
     setState(() {
       isCharging = true;
     });

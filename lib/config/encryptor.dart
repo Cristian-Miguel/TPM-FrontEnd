@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 
-class Encriptar {
+class Encryptor {
   static encriptarPassword(String password, String value) {
     var key = utf8.encode(password);
     var bytes = utf8.encode(value);
