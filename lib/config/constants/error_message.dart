@@ -20,4 +20,7 @@ class ErrorMessage {
 
   /* SERVER ERROR MESSAGE*/
   static const genericError_500 = "Server isn't responding, try again later.";
+
+  /*Google error*/
+  static const authGoogleError = "Error with the authenticate the google user";
 }

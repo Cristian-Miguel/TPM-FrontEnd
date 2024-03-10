@@ -75,19 +75,19 @@ class _TemplateState extends State<Template> {
               icon: Icon(Icons.home),
             ),
             BottomNavigationBarItem(
-              label: 'Descubrir',
+              label: 'Search',
               icon: Icon(Icons.search),
             ),
             BottomNavigationBarItem(
-              label: 'Reservas',
+              label: 'Reservation',
               icon: Icon(Icons.send),
             ),
             BottomNavigationBarItem(
-              label: 'Mensajes',
+              label: 'Message',
               icon: Icon(Icons.message),
             ),
             BottomNavigationBarItem(
-              label: 'Perfil',
+              label: 'Profile',
               icon: Icon(Icons.account_circle_outlined),
             ),
           ]),

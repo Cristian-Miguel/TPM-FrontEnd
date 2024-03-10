@@ -99,406 +99,439 @@ class _SignUpState extends State<SignUp> {
   }
 
   singUpView() {
-    return SingleChildScrollView(
-      child: Form(
-        key: _formKey,
-        child: Stack(children: [
-          Visibility(
-            visible: !isCharging,
-            child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 80, 0, 5),
-                child: Text(
-                  'Register account',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
-                child: TextButton(
-                  onPressed: () =>
-                      {_emailInputTextController, _passwordInputTextController},
-                  style: ButtonStyle(
-                    minimumSize: MaterialStateProperty.resolveWith(
-                        (Set<MaterialState> states) {
-                      return const Size(120, 120);
-                    }),
-                    backgroundColor: MaterialStateProperty.resolveWith(
-                        (Set<MaterialState> states) {
-                      return states.contains(MaterialState.disabled)
-                          ? null
-                          : const Color.fromRGBO(211, 211, 211, 1.0);
-                    }),
-                    shape: MaterialStateProperty.resolveWith(
-                        (Set<MaterialState> states) {
-                      return const CircleBorder(
-                          side: BorderSide.none, eccentricity: 0.1);
-                    }),
-                  ),
-                  child: const Text(
-                    "Save image",
-                    style: TextStyle(
-                      color: Colors.black45,
-                    ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Sign up",
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 10,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back,
+              color: Colors.black), // Change color here
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(children: [
+            Visibility(
+              visible: !isCharging,
+              child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 80, 0, 5),
+                  child: Text(
+                    'Create account',
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                 ),
-              ),
-              //* Usuario
-              Container(
-                margin: const EdgeInsets.fromLTRB(20, 5, 20, 0),
-                child: TextFormField(
-                  controller: _userInputTextController,
-                  decoration: const InputDecoration(
-                    labelText: 'User',
-                    border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
+                  child: TextButton(
+                    onPressed: () => {
+                      _emailInputTextController,
+                      _passwordInputTextController
+                    },
+                    style: ButtonStyle(
+                      minimumSize: MaterialStateProperty.resolveWith(
+                          (Set<MaterialState> states) {
+                        return const Size(120, 120);
+                      }),
+                      backgroundColor: MaterialStateProperty.resolveWith(
+                          (Set<MaterialState> states) {
+                        return states.contains(MaterialState.disabled)
+                            ? null
+                            : const Color.fromRGBO(211, 211, 211, 1.0);
+                      }),
+                      shape: MaterialStateProperty.resolveWith(
+                          (Set<MaterialState> states) {
+                        return const CircleBorder(
+                            side: BorderSide.none, eccentricity: 0.1);
+                      }),
                     ),
-                    errorBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red),
+                    child: const Text(
+                      "Save image",
+                      style: TextStyle(
+                        color: Colors.black45,
+                      ),
                     ),
                   ),
-                  validator: (value) {
-                    return (value == null || value.isEmpty)
-                        ? ErrorMessage.emptyField
-                        : null;
-                  },
                 ),
-              ),
-              //* Email
-              Container(
-                margin: const EdgeInsets.fromLTRB(20, 5, 20, 0),
-                child: TextFormField(
-                  controller: _emailInputTextController,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
+                //* Usuario
+                Container(
+                  margin: const EdgeInsets.fromLTRB(20, 5, 20, 0),
+                  child: TextFormField(
+                    controller: _userInputTextController,
+                    decoration: const InputDecoration(
+                      labelText: 'User',
+                      border: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                      errorBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
                     ),
-                    errorBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red),
-                    ),
+                    validator: (value) {
+                      return (value == null || value.isEmpty)
+                          ? ErrorMessage.emptyField
+                          : null;
+                    },
                   ),
-                  validator: (value) {
-                    var validation = [
-                      [
-                        (value == null || value.isEmpty),
-                        ErrorMessage.emptyField
-                      ],
-                      [
-                        ValidateField.validateRegex(value, RegexField.email),
-                        ErrorMessage.notValidEmail
-                      ]
-                    ];
+                ),
+                //* Email
+                Container(
+                  margin: const EdgeInsets.fromLTRB(20, 5, 20, 0),
+                  child: TextFormField(
+                    controller: _emailInputTextController,
+                    decoration: const InputDecoration(
+                      labelText: 'Email',
+                      border: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                      errorBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                    ),
+                    validator: (value) {
+                      var validation = [
+                        [
+                          (value == null || value.isEmpty),
+                          ErrorMessage.emptyField
+                        ],
+                        [
+                          ValidateField.validateRegex(value, RegexField.email),
+                          ErrorMessage.notValidEmail
+                        ]
+                      ];
 
-                    return ValidateField.printError(validation);
-                  },
-                ),
-              ),
-              //* Password
-              Container(
-                margin: const EdgeInsets.fromLTRB(20, 5, 20, 0),
-                child: TextFormField(
-                  controller: _passwordInputTextController,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    border: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    errorBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red),
-                    ),
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          hiddenPassword1 = (!hiddenPassword1);
-                          hiddenPassword1
-                              ? iconEye1 = const Icon(Icons.visibility)
-                              : iconEye1 = const Icon(Icons.visibility_off);
-                        });
-                      },
-                      alignment: Alignment.bottomCenter,
-                      padding: const EdgeInsets.all(0),
-                      icon: iconEye1,
-                    ),
+                      return ValidateField.printError(validation);
+                    },
                   ),
-                  obscureText: hiddenPassword1,
-                  validator: (value) {
-                    var validation = [
-                      [
-                        (value == null || value.isEmpty),
-                        ErrorMessage.emptyField
-                      ],
-                      [
-                        ValidateField.validateRegex(value, RegexField.password),
-                        ErrorMessage.notValidateCharacters
-                      ],
-                      [
-                        value.toString() !=
-                            _passwordInputTextController.text.toString(),
-                        ErrorMessage.notMatchPassword
-                      ]
-                    ];
-
-                    return ValidateField.printError(validation);
-                  },
                 ),
-              ),
-              //* Confirm password
-              Container(
-                margin: const EdgeInsets.fromLTRB(20, 5, 20, 0),
-                child: TextFormField(
-                  controller: _confirmPasswordInputTextController,
-                  decoration: InputDecoration(
-                    labelText: 'Confirm password',
-                    border: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    errorBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red),
-                    ),
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          hiddenPassword2 = (!hiddenPassword2);
-                          hiddenPassword2
-                              ? iconEye2 = const Icon(Icons.visibility)
-                              : iconEye2 = const Icon(Icons.visibility_off);
-                        });
-                      },
-                      alignment: Alignment.bottomCenter,
-                      padding: const EdgeInsets.all(0),
-                      icon: iconEye2,
-                    ),
-                  ),
-                  obscureText: hiddenPassword2,
-                  validator: (value) {
-                    var validation = [
-                      [
-                        (value == null || value.isEmpty),
-                        ErrorMessage.emptyField
-                      ],
-                      [
-                        ValidateField.validateRegex(value, RegexField.password),
-                        ErrorMessage.notValidateCharacters
-                      ],
-                      [
-                        value.toString() !=
-                            _passwordInputTextController.text.toString(),
-                        ErrorMessage.notMatchPassword
-                      ]
-                    ];
-
-                    return ValidateField.printError(validation);
-                  },
-                ),
-              ),
-              //* Nombre
-              Container(
-                margin: const EdgeInsets.fromLTRB(20, 5, 20, 0),
-                child: TextFormField(
-                  controller: _nameInputTextController,
-                  decoration: const InputDecoration(
-                    labelText: 'Name',
-                    border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    errorBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red),
-                    ),
-                  ),
-                  validator: (value) {
-                    var validation = [
-                      [
-                        (value == null || value.isEmpty),
-                        ErrorMessage.emptyField
-                      ],
-                      [
-                        ValidateField.validateRegex(value, RegexField.letters),
-                        ErrorMessage.notValidateCharacters
-                      ]
-                    ];
-
-                    return ValidateField.printError(validation);
-                  },
-                ),
-              ),
-              //* Apellido Paterno
-              Container(
-                margin: const EdgeInsets.fromLTRB(20, 5, 20, 0),
-                child: TextFormField(
-                  controller: _lastNameInputTextController,
-                  decoration: const InputDecoration(
-                    labelText: 'Last Name',
-                    border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    errorBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red),
-                    ),
-                  ),
-                  validator: (value) {
-                    var validation = [
-                      [
-                        (value == null || value.isEmpty),
-                        ErrorMessage.emptyField
-                      ],
-                      [
-                        ValidateField.validateRegex(value, RegexField.letters),
-                        ErrorMessage.notValidateCharacters
-                      ]
-                    ];
-
-                    return ValidateField.printError(validation);
-                  },
-                ),
-              ),
-              //* Fecha de nacimiento
-              Container(
-                margin: const EdgeInsets.fromLTRB(20, 5, 20, 0),
-                child: TextFormField(
-                  controller: _birthDateInputTextController,
-                  decoration: InputDecoration(
-                    labelText: 'Birth Date',
-                    border: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    errorBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red),
-                    ),
-                    suffixIcon: IconButton(
-                      onPressed: () async {
-                        DateTime? pickedDate = await showDatePicker(
-                          context: context, //context of current state
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(1900),
-                          lastDate: DateTime.now(),
-                        );
-                        if (pickedDate != null) {
-                          String formattedDate =
-                              DateFormat('yyyy-MM-dd').format(pickedDate);
+                //* Password
+                Container(
+                  margin: const EdgeInsets.fromLTRB(20, 5, 20, 0),
+                  child: TextFormField(
+                    controller: _passwordInputTextController,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      border: const UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                      errorBorder: const UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                      suffixIcon: IconButton(
+                        onPressed: () {
                           setState(() {
-                            _birthDateInputTextController.text = formattedDate;
+                            hiddenPassword1 = (!hiddenPassword1);
+                            hiddenPassword1
+                                ? iconEye1 = const Icon(Icons.visibility)
+                                : iconEye1 = const Icon(Icons.visibility_off);
                           });
-                        }
-                      },
-                      icon: const Icon(Icons.date_range),
-                      alignment: Alignment.bottomCenter,
-                    ),
-                  ),
-                  validator: (value) {
-                    var validation = [
-                      [
-                        (value == null || value.isEmpty),
-                        ErrorMessage.emptyField
-                      ],
-                      [
-                        ValidateField.validateRegex(value, RegexField.date),
-                        ErrorMessage.notValidateCharacters
-                      ]
-                    ];
-
-                    return ValidateField.printError(validation);
-                  },
-                ),
-              ),
-              //* RFC
-              Container(
-                margin: const EdgeInsets.fromLTRB(20, 5, 20, 0),
-                child: TextFormField(
-                  controller: _rfcInputTextController,
-                  decoration: const InputDecoration(
-                    labelText: 'RFC',
-                    border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    errorBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red),
-                    ),
-                  ),
-                  validator: (value) {
-                    var validation = [
-                      [
-                        (value == null || value.isEmpty),
-                        ErrorMessage.emptyField
-                      ],
-                      [
-                        ValidateField.validateRegex(value, RegexField.rfc),
-                        ErrorMessage.notValidateCharacters
-                      ]
-                    ];
-
-                    return ValidateField.printError(validation);
-                  },
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(5, 20, 30, 20),
-                    child: TextButton(
-                      onPressed: () {
-                        setState(() {
-                          isSingIn = true;
-                          indexPage = 1;
-                        });
-                      },
-                      style: ButtonStyle(
-                        minimumSize: MaterialStateProperty.resolveWith(
-                            (Set<MaterialState> states) {
-                          return const Size(100, 40);
-                        }),
-                        foregroundColor: MaterialStateProperty.resolveWith(
-                            (Set<MaterialState> states) {
-                          return states.contains(MaterialState.disabled)
-                              ? null
-                              : Colors.black54;
-                        }),
-                        backgroundColor: MaterialStateProperty.resolveWith(
-                            (Set<MaterialState> states) {
-                          return states.contains(MaterialState.disabled)
-                              ? null
-                              : Colors.transparent;
-                        }),
+                        },
+                        alignment: Alignment.bottomCenter,
+                        padding: const EdgeInsets.all(0),
+                        icon: iconEye1,
                       ),
-                      child: const Text('Cancel'),
                     ),
+                    obscureText: hiddenPassword1,
+                    validator: (value) {
+                      var validation = [
+                        [
+                          (value == null || value.isEmpty),
+                          ErrorMessage.emptyField
+                        ],
+                        [
+                          ValidateField.validateRegex(
+                              value, RegexField.password),
+                          ErrorMessage.notValidateCharacters
+                        ],
+                        [
+                          value.toString() !=
+                              _passwordInputTextController.text.toString(),
+                          ErrorMessage.notMatchPassword
+                        ]
+                      ];
+
+                      return ValidateField.printError(validation);
+                    },
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 20, 5, 20),
-                    child: TextButton(
-                      onPressed: _postSignUp,
-                      style: ButtonStyle(
-                        minimumSize: MaterialStateProperty.resolveWith(
-                            (Set<MaterialState> states) {
-                          return const Size(180, 40);
-                        }),
-                        foregroundColor: MaterialStateProperty.resolveWith(
-                            (Set<MaterialState> states) {
-                          return states.contains(MaterialState.disabled)
-                              ? null
-                              : Colors.white;
-                        }),
-                        backgroundColor: MaterialStateProperty.resolveWith(
-                            (Set<MaterialState> states) {
-                          return states.contains(MaterialState.disabled)
-                              ? null
-                              : const Color.fromRGBO(255, 55, 92, 1.0);
-                        }),
+                ),
+                //* Confirm password
+                Container(
+                  margin: const EdgeInsets.fromLTRB(20, 5, 20, 0),
+                  child: TextFormField(
+                    controller: _confirmPasswordInputTextController,
+                    decoration: InputDecoration(
+                      labelText: 'Confirm password',
+                      border: const UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
                       ),
-                      child: const Text('SignIn'),
+                      errorBorder: const UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            hiddenPassword2 = (!hiddenPassword2);
+                            hiddenPassword2
+                                ? iconEye2 = const Icon(Icons.visibility)
+                                : iconEye2 = const Icon(Icons.visibility_off);
+                          });
+                        },
+                        alignment: Alignment.bottomCenter,
+                        padding: const EdgeInsets.all(0),
+                        icon: iconEye2,
+                      ),
                     ),
+                    obscureText: hiddenPassword2,
+                    validator: (value) {
+                      var validation = [
+                        [
+                          (value == null || value.isEmpty),
+                          ErrorMessage.emptyField
+                        ],
+                        [
+                          ValidateField.validateRegex(
+                              value, RegexField.password),
+                          ErrorMessage.notValidateCharacters
+                        ],
+                        [
+                          value.toString() !=
+                              _passwordInputTextController.text.toString(),
+                          ErrorMessage.notMatchPassword
+                        ]
+                      ];
+
+                      return ValidateField.printError(validation);
+                    },
                   ),
-                ],
-              ),
-            ]),
-          ),
-          Visibility(
-            visible: isCharging,
-            child:
-                const LoadScreen(loadText: 'Wait a minute, we charge the data'),
-          ),
-        ]),
+                ),
+                //* Nombre
+                Container(
+                  margin: const EdgeInsets.fromLTRB(20, 5, 20, 0),
+                  child: TextFormField(
+                    controller: _nameInputTextController,
+                    decoration: const InputDecoration(
+                      labelText: 'Name',
+                      border: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                      errorBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                    ),
+                    validator: (value) {
+                      var validation = [
+                        [
+                          (value == null || value.isEmpty),
+                          ErrorMessage.emptyField
+                        ],
+                        [
+                          ValidateField.validateRegex(
+                              value, RegexField.letters),
+                          ErrorMessage.notValidateCharacters
+                        ]
+                      ];
+
+                      return ValidateField.printError(validation);
+                    },
+                  ),
+                ),
+                //* Apellido Paterno
+                Container(
+                  margin: const EdgeInsets.fromLTRB(20, 5, 20, 0),
+                  child: TextFormField(
+                    controller: _lastNameInputTextController,
+                    decoration: const InputDecoration(
+                      labelText: 'Last Name',
+                      border: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                      errorBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                    ),
+                    validator: (value) {
+                      var validation = [
+                        [
+                          (value == null || value.isEmpty),
+                          ErrorMessage.emptyField
+                        ],
+                        [
+                          ValidateField.validateRegex(
+                              value, RegexField.letters),
+                          ErrorMessage.notValidateCharacters
+                        ]
+                      ];
+
+                      return ValidateField.printError(validation);
+                    },
+                  ),
+                ),
+                //* Fecha de nacimiento
+                Container(
+                  margin: const EdgeInsets.fromLTRB(20, 5, 20, 0),
+                  child: TextFormField(
+                    controller: _birthDateInputTextController,
+                    decoration: InputDecoration(
+                      labelText: 'Birth Date',
+                      border: const UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                      errorBorder: const UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                      suffixIcon: IconButton(
+                        onPressed: () async {
+                          DateTime? pickedDate = await showDatePicker(
+                            context: context, //context of current state
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime.now(),
+                          );
+                          if (pickedDate != null) {
+                            String formattedDate =
+                                DateFormat('yyyy-MM-dd').format(pickedDate);
+                            setState(() {
+                              _birthDateInputTextController.text =
+                                  formattedDate;
+                            });
+                          }
+                        },
+                        icon: const Icon(Icons.date_range),
+                        alignment: Alignment.bottomCenter,
+                      ),
+                    ),
+                    validator: (value) {
+                      var validation = [
+                        [
+                          (value == null || value.isEmpty),
+                          ErrorMessage.emptyField
+                        ],
+                        [
+                          ValidateField.validateRegex(value, RegexField.date),
+                          ErrorMessage.notValidateCharacters
+                        ]
+                      ];
+
+                      return ValidateField.printError(validation);
+                    },
+                  ),
+                ),
+                //* RFC
+                Container(
+                  margin: const EdgeInsets.fromLTRB(20, 5, 20, 0),
+                  child: TextFormField(
+                    controller: _rfcInputTextController,
+                    decoration: const InputDecoration(
+                      labelText: 'RFC',
+                      border: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                      errorBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                    ),
+                    validator: (value) {
+                      var validation = [
+                        [
+                          (value == null || value.isEmpty),
+                          ErrorMessage.emptyField
+                        ],
+                        [
+                          ValidateField.validateRegex(value, RegexField.rfc),
+                          ErrorMessage.notValidateCharacters
+                        ]
+                      ];
+
+                      return ValidateField.printError(validation);
+                    },
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(5, 20, 30, 20),
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          // setState(() {
+                          //   isSingIn = true;
+                          //   indexPage = 1;
+                          // });
+                        },
+                        style: ButtonStyle(
+                          textStyle: MaterialStateProperty.resolveWith(
+                              (Set<MaterialState> states) {
+                            return const TextStyle(
+                              color: Colors.black54,
+                              decoration: TextDecoration
+                                  .underline, // Add underline decoration
+                            );
+                          }),
+                          minimumSize: MaterialStateProperty.resolveWith(
+                              (Set<MaterialState> states) {
+                            return const Size(100, 40);
+                          }),
+                          foregroundColor: MaterialStateProperty.resolveWith(
+                              (Set<MaterialState> states) {
+                            return states.contains(MaterialState.disabled)
+                                ? null
+                                : Colors.black54;
+                          }),
+                          backgroundColor: MaterialStateProperty.resolveWith(
+                              (Set<MaterialState> states) {
+                            return states.contains(MaterialState.disabled)
+                                ? null
+                                : Colors.transparent;
+                          }),
+                        ),
+                        child: const Text('Cancel'),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(30, 20, 5, 20),
+                      child: TextButton(
+                        onPressed: _postSignUp,
+                        style: ButtonStyle(
+                          minimumSize: MaterialStateProperty.resolveWith(
+                              (Set<MaterialState> states) {
+                            return const Size(180, 40);
+                          }),
+                          foregroundColor: MaterialStateProperty.resolveWith(
+                              (Set<MaterialState> states) {
+                            return states.contains(MaterialState.disabled)
+                                ? null
+                                : Colors.white;
+                          }),
+                          backgroundColor: MaterialStateProperty.resolveWith(
+                              (Set<MaterialState> states) {
+                            return states.contains(MaterialState.disabled)
+                                ? null
+                                : const Color.fromRGBO(255, 55, 92, 1.0);
+                          }),
+                        ),
+                        child: const Text('Sign up'),
+                      ),
+                    ),
+                  ],
+                ),
+              ]),
+            ),
+            Visibility(
+              visible: isCharging,
+              child: const LoadScreen(
+                  loadText: 'Wait a minute, we charge the data'),
+            ),
+          ]),
+        ),
       ),
     );
   }

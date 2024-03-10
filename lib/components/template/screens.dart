@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:turismo_flutter/views/user/login.dart';
-import 'package:turismo_flutter/views/user/profile.dart';
-import 'package:turismo_flutter/views/product/service_list.dart';
 import 'package:turismo_flutter/views/chat/conversations.dart';
 import 'package:turismo_flutter/views/main/home_page.dart';
+import 'package:turismo_flutter/views/product/service_list.dart';
 import 'package:turismo_flutter/views/reservation/reservation_page.dart';
+import 'package:turismo_flutter/views/user/choose_auth.dart';
+import 'package:turismo_flutter/views/user/profile.dart';
 
 class Screens {
   final List<Widget> _mainViews = [
@@ -13,7 +13,7 @@ class Screens {
     const Reservation(), //2
     const Conversations(), //3
     const Profile(), //4
-    const Login(), //5
+    const ChooseAuth(), //5
   ];
 
   final List<Widget> settingView = [];

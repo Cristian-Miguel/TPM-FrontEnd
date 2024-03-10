@@ -13,7 +13,7 @@ class HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Michoacan Ofrece",
+          "Home",
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,

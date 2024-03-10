@@ -117,221 +117,149 @@ class LoginState extends State<Login> {
   }
 
   authPage() {
-    return SingleChildScrollView(
-      child: Form(
-        key: _formKey,
-        child: Stack(
-          alignment: AlignmentDirectional.center,
-          children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 100, bottom: 5),
-                  child: Text(
-                    'Login',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(
-                      top: 50, bottom: 0, left: 20, right: 20),
-                  child: TextFormField(
-                    controller: _emailInputTextController,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                      errorBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Sign in",
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 10,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back,
+              color: Colors.black), // Change color here
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Stack(
+            alignment: AlignmentDirectional.center,
+            children: <Widget>[
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 100, bottom: 5),
+                    child: Text(
+                      'Sign in',
+                      style: Theme.of(context).textTheme.headlineMedium,
                     ),
-                    validator: (value) {
-                      var validation = [
-                        [
-                          (value == null || value.isEmpty),
-                          ErrorMessage.emptyField
-                        ],
-                        [
-                          ValidateField.validateRegex(value, RegexField.email),
-                          ErrorMessage.notValidEmail
-                        ]
-                      ];
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(
+                        top: 50, bottom: 0, left: 20, right: 20),
+                    child: TextFormField(
+                      controller: _emailInputTextController,
+                      decoration: const InputDecoration(
+                        labelText: 'Email',
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                        ),
+                        errorBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red),
+                        ),
+                      ),
+                      validator: (value) {
+                        var validation = [
+                          [
+                            (value == null || value.isEmpty),
+                            ErrorMessage.emptyField
+                          ],
+                          [
+                            ValidateField.validateRegex(
+                                value, RegexField.email),
+                            ErrorMessage.notValidEmail
+                          ]
+                        ];
 
-                      return ValidateField.printError(validation);
-                    },
+                        return ValidateField.printError(validation);
+                      },
+                    ),
                   ),
-                ),
-                Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(
-                          top: 10, bottom: 0, right: 20, left: 20),
-                      child: TextFormField(
-                        controller: _passwordInputTextController,
-                        decoration: InputDecoration(
-                          labelText: 'Password',
-                          border: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black),
+                  Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(
+                            top: 10, bottom: 0, right: 20, left: 20),
+                        child: TextFormField(
+                          controller: _passwordInputTextController,
+                          decoration: InputDecoration(
+                            labelText: 'Password',
+                            border: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black),
+                            ),
+                            errorBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red),
+                            ),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  hiddenPassword = (!hiddenPassword);
+                                  hiddenPassword
+                                      ? iconEye = const Icon(Icons.visibility)
+                                      : iconEye =
+                                          const Icon(Icons.visibility_off);
+                                });
+                              },
+                              alignment: Alignment.bottomCenter,
+                              padding: const EdgeInsets.all(0),
+                              icon: iconEye,
+                            ),
                           ),
-                          errorBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red),
-                          ),
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                hiddenPassword = (!hiddenPassword);
-                                hiddenPassword
-                                    ? iconEye = const Icon(Icons.visibility)
-                                    : iconEye =
-                                        const Icon(Icons.visibility_off);
-                              });
-                            },
-                            alignment: Alignment.bottomCenter,
-                            padding: const EdgeInsets.all(0),
-                            icon: iconEye,
-                          ),
+                          obscureText: hiddenPassword,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return ErrorMessage.emptyField;
+                            } else if (value.length < 8) {
+                              return ErrorMessage.shortPassword;
+                            } else if (value.length > 17) {
+                              return ErrorMessage.largePassword;
+                            }
+                            return null;
+                          },
                         ),
-                        obscureText: hiddenPassword,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return ErrorMessage.emptyField;
-                          } else if (value.length < 8) {
-                            return ErrorMessage.shortPassword;
-                          } else if (value.length > 17) {
-                            return ErrorMessage.largePassword;
-                          }
-                          return null;
-                        },
                       ),
-                    ),
-                    Container(
-                      margin:
-                          const EdgeInsets.only(bottom: 20, top: 6, right: 20),
-                      alignment: Alignment.bottomRight,
-                      child: TextButton(
-                        onPressed: () => {
-                          setState(() {
-                            indexPage = 2;
-                            isView = true;
-                          }),
-                        },
-                        style: ButtonStyle(
-                          minimumSize: MaterialStateProperty.resolveWith(
-                              (Set<MaterialState> states) {
-                            return const Size(140, 10);
-                          }),
-                          foregroundColor: MaterialStateProperty.resolveWith(
-                              (Set<MaterialState> states) {
-                            return states.contains(MaterialState.disabled)
-                                ? null
-                                : Colors.blue;
-                          }),
-                          backgroundColor: MaterialStateProperty.resolveWith(
-                              (Set<MaterialState> states) {
-                            return states.contains(MaterialState.disabled)
-                                ? null
-                                : Colors.transparent;
-                          }),
-                        ),
-                        child: const Text('Forgot your password?'),
-                      ),
-                    ),
-                  ],
-                ),
-                //* Boton de inicio de sesion
-                TextButton(
-                  onPressed: _getAuthRequestLogin,
-                  style: ButtonStyle(
-                    minimumSize: MaterialStateProperty.resolveWith(
-                        (Set<MaterialState> states) {
-                      return const Size(310, 40);
-                    }),
-                    foregroundColor: MaterialStateProperty.resolveWith(
-                        (Set<MaterialState> states) {
-                      return states.contains(MaterialState.disabled)
-                          ? null
-                          : Colors.white;
-                    }),
-                    backgroundColor: MaterialStateProperty.resolveWith(
-                        (Set<MaterialState> states) {
-                      return states.contains(MaterialState.disabled)
-                          ? null
-                          : const Color.fromRGBO(255, 55, 92, 1.0);
-                    }),
-                  ),
-                  child: const Text('Login'),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 10),
-                  child: const Text('- or -'),
-                ),
-                //* login de google
-                Container(
-                  margin: const EdgeInsets.only(top: 10, bottom: 2),
-                  width: 300,
-                  height: 40,
-                  alignment: Alignment.center,
-                  child: TextButton(
-                    onPressed: _signInGoogle,
-                    style: ButtonStyle(
-                      minimumSize: MaterialStateProperty.resolveWith(
-                          (Set<MaterialState> states) {
-                        return const Size(300, 40);
-                      }),
-                      foregroundColor: MaterialStateProperty.resolveWith(
-                          (Set<MaterialState> states) {
-                        return states.contains(MaterialState.disabled)
-                            ? null
-                            : Colors.white;
-                      }),
-                      backgroundColor: MaterialStateProperty.resolveWith(
-                          (Set<MaterialState> states) {
-                        return states.contains(MaterialState.disabled)
-                            ? null
-                            : Colors.black38;
-                      }),
-                      alignment: Alignment.center,
-                    ),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.g_mobiledata_outlined,
-                          color: Colors.white,
-                        ),
-                        Text(
-                          'Sign up to Google',
-                          style: TextStyle(
-                            color: Colors.white,
+                      Container(
+                        margin: const EdgeInsets.only(
+                            bottom: 20, top: 6, right: 20),
+                        alignment: Alignment.bottomRight,
+                        child: TextButton(
+                          onPressed: () => {
+                            setState(() {
+                              indexPage = 2;
+                              isView = true;
+                            }),
+                          },
+                          style: ButtonStyle(
+                            minimumSize: MaterialStateProperty.resolveWith(
+                                (Set<MaterialState> states) {
+                              return const Size(140, 10);
+                            }),
+                            foregroundColor: MaterialStateProperty.resolveWith(
+                                (Set<MaterialState> states) {
+                              return states.contains(MaterialState.disabled)
+                                  ? null
+                                  : Colors.blue;
+                            }),
+                            backgroundColor: MaterialStateProperty.resolveWith(
+                                (Set<MaterialState> states) {
+                              return states.contains(MaterialState.disabled)
+                                  ? null
+                                  : Colors.transparent;
+                            }),
                           ),
+                          child: const Text('Forgot your password?'),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ),
-                const Divider(
-                  color: Colors.black45,
-                  height: 20,
-                  thickness: 0.8,
-                  indent: 10,
-                  endIndent: 10,
-                ),
-                //*Registro de correo
-                Container(
-                  margin: const EdgeInsets.only(top: 1, bottom: 1),
-                  width: 300,
-                  height: 40,
-                  alignment: Alignment.center,
-                  child: TextButton(
-                    onPressed: () => {
-                      setState(() {
-                        indexPage = 1;
-                        isView = true;
-                      }),
-                    },
+                  //* Boton de inicio de sesion
+                  TextButton(
+                    onPressed: _getAuthRequestLogin,
                     style: ButtonStyle(
                       minimumSize: MaterialStateProperty.resolveWith(
                           (Set<MaterialState> states) {
@@ -350,82 +278,172 @@ class LoginState extends State<Login> {
                             : const Color.fromRGBO(255, 55, 92, 1.0);
                       }),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(right: 2),
-                          child: const Icon(
-                            Icons.email,
+                    child: const Text('Sign in'),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 10),
+                    child: const Text('- or -'),
+                  ),
+                  //* login de google
+                  Container(
+                    margin: const EdgeInsets.only(top: 10, bottom: 2),
+                    width: 300,
+                    height: 40,
+                    alignment: Alignment.center,
+                    child: TextButton(
+                      onPressed: _signInGoogle,
+                      style: ButtonStyle(
+                        minimumSize: MaterialStateProperty.resolveWith(
+                            (Set<MaterialState> states) {
+                          return const Size(300, 40);
+                        }),
+                        foregroundColor: MaterialStateProperty.resolveWith(
+                            (Set<MaterialState> states) {
+                          return states.contains(MaterialState.disabled)
+                              ? null
+                              : Colors.white;
+                        }),
+                        backgroundColor: MaterialStateProperty.resolveWith(
+                            (Set<MaterialState> states) {
+                          return states.contains(MaterialState.disabled)
+                              ? null
+                              : Colors.black38;
+                        }),
+                        alignment: Alignment.center,
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.g_mobiledata_outlined,
                             color: Colors.white,
                           ),
-                        ),
-                        const Text(
-                          'Create account',
-                          style: TextStyle(
-                            color: Colors.white,
+                          Text(
+                            'Sign up to Google',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                //* Registro de google
-                Container(
-                  margin: const EdgeInsets.only(top: 1, bottom: 1),
-                  width: 300,
-                  height: 40,
-                  alignment: Alignment.center,
-                  child: TextButton(
-                    onPressed: _singUpGoogle,
-                    style: ButtonStyle(
-                      minimumSize: MaterialStateProperty.resolveWith(
-                          (Set<MaterialState> states) {
-                        return const Size(300, 40);
-                      }),
-                      foregroundColor: MaterialStateProperty.resolveWith(
-                          (Set<MaterialState> states) {
-                        return states.contains(MaterialState.disabled)
-                            ? null
-                            : Colors.white;
-                      }),
-                      backgroundColor: MaterialStateProperty.resolveWith(
-                          (Set<MaterialState> states) {
-                        return states.contains(MaterialState.disabled)
-                            ? null
-                            : Colors.black38;
-                      }),
-                      alignment: Alignment.center,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(right: 2),
-                          child: const Icon(
-                            Icons.g_mobiledata,
-                            color: Colors.white,
+                  const Divider(
+                    color: Colors.black45,
+                    height: 20,
+                    thickness: 0.8,
+                    indent: 10,
+                    endIndent: 10,
+                  ),
+                  //*Registro de correo
+                  Container(
+                    margin: const EdgeInsets.only(top: 1, bottom: 1),
+                    width: 300,
+                    height: 40,
+                    alignment: Alignment.center,
+                    child: TextButton(
+                      onPressed: () => {
+                        setState(() {
+                          indexPage = 1;
+                          isView = true;
+                        }),
+                      },
+                      style: ButtonStyle(
+                        minimumSize: MaterialStateProperty.resolveWith(
+                            (Set<MaterialState> states) {
+                          return const Size(310, 40);
+                        }),
+                        foregroundColor: MaterialStateProperty.resolveWith(
+                            (Set<MaterialState> states) {
+                          return states.contains(MaterialState.disabled)
+                              ? null
+                              : Colors.white;
+                        }),
+                        backgroundColor: MaterialStateProperty.resolveWith(
+                            (Set<MaterialState> states) {
+                          return states.contains(MaterialState.disabled)
+                              ? null
+                              : const Color.fromRGBO(255, 55, 92, 1.0);
+                        }),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(right: 2),
+                            child: const Icon(
+                              Icons.email,
+                              color: Colors.white,
+                            ),
                           ),
-                        ),
-                        const Text(
-                          '>>> Create new account with google <<<',
-                          style: TextStyle(
-                            color: Colors.white,
+                          const Text(
+                            'Create account',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            Visibility(
-              visible: isCharging,
-              child: const LoadScreen(loadText: 'logger'),
-            ),
-          ],
+                  //* Registro de google
+                  Container(
+                    margin: const EdgeInsets.only(top: 1, bottom: 1),
+                    width: 300,
+                    height: 40,
+                    alignment: Alignment.center,
+                    child: TextButton(
+                      onPressed: _singUpGoogle,
+                      style: ButtonStyle(
+                        minimumSize: MaterialStateProperty.resolveWith(
+                            (Set<MaterialState> states) {
+                          return const Size(300, 40);
+                        }),
+                        foregroundColor: MaterialStateProperty.resolveWith(
+                            (Set<MaterialState> states) {
+                          return states.contains(MaterialState.disabled)
+                              ? null
+                              : Colors.white;
+                        }),
+                        backgroundColor: MaterialStateProperty.resolveWith(
+                            (Set<MaterialState> states) {
+                          return states.contains(MaterialState.disabled)
+                              ? null
+                              : Colors.black38;
+                        }),
+                        alignment: Alignment.center,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(right: 2),
+                            child: const Icon(
+                              Icons.g_mobiledata,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const Text(
+                            'Create new account with google',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Visibility(
+                visible: isCharging,
+                child: const LoadScreen(loadText: 'logger'),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:turismo_flutter/views/user/login.dart';
 import 'package:turismo_flutter/middleware/jwt_manage.dart';
 import 'package:turismo_flutter/middleware/check_rol.dart';
 import 'package:turismo_flutter/views/user/administrator.dart';
+import 'package:turismo_flutter/views/user/choose_auth.dart';
 import 'package:turismo_flutter/views/user/enterprice.dart';
 import 'package:turismo_flutter/views/user/user.dart';
 
@@ -47,7 +47,7 @@ class ProfileState extends State<Profile> {
     const Administrator(),
     const User(),
     const Enterprice(),
-    const Login(),
+    const ChooseAuth()
   ];
 
   @override
