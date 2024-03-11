@@ -33,147 +33,169 @@ class _ChooseAuthState extends State<ChooseAuth> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            "Discovery Mich",
-            style: TextStyle(color: Colors.black),
-          ),
-          backgroundColor: Colors.white,
-          elevation: 10,
+      appBar: AppBar(
+        title: const Text(
+          "Discovery Mich",
+          style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
-        body: Center(
-          //SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                margin: const EdgeInsets.only(bottom: 10),
-                child: const Text(
-                  "Find your dream trip",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                ),
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(top: 50, bottom: 5),
-                    child: TextButton(
-                      onPressed: () {
-                        _singUpGoogle(context);
-                      },
-                      style: ButtonStyle(
-                        minimumSize: MaterialStateProperty.resolveWith(
-                            (Set<MaterialState> states) {
-                          return const Size(310, 40);
-                        }),
-                        foregroundColor: MaterialStateProperty.resolveWith(
-                            (Set<MaterialState> states) {
-                          return states.contains(MaterialState.disabled)
-                              ? null
-                              : Colors.white;
-                        }),
-                        backgroundColor: MaterialStateProperty.resolveWith(
-                            (Set<MaterialState> states) {
-                          return states.contains(MaterialState.disabled)
-                              ? null
-                              : const Color.fromRGBO(255, 55, 92, 1.0);
-                        }),
-                      ),
-                      child: const Text('Sign up with Google'),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 10, bottom: 5),
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SignUp()));
-                      },
-                      style: ButtonStyle(
-                        minimumSize: MaterialStateProperty.resolveWith(
-                            (Set<MaterialState> states) {
-                          return const Size(310, 40);
-                        }),
-                        foregroundColor: MaterialStateProperty.resolveWith(
-                            (Set<MaterialState> states) {
-                          return states.contains(MaterialState.disabled)
-                              ? null
-                              : Colors.white;
-                        }),
-                        backgroundColor: MaterialStateProperty.resolveWith(
-                            (Set<MaterialState> states) {
-                          return states.contains(MaterialState.disabled)
-                              ? null
-                              : const Color.fromRGBO(255, 55, 92, 1.0);
-                        }),
-                      ),
-                      child: const Text('Create account'),
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                margin: const EdgeInsets.only(
-                    top: 15, bottom: 15, left: 20, right: 20),
-                width: 310,
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Expanded(
-                        child: Divider(
-                          thickness: 1,
-                          color: Colors.black87,
+        elevation: 10,
+      ),
+      backgroundColor: Colors.white,
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          Center(
+            //SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Visibility(
+                  visible: !isCharging,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 10),
+                        child: const Text(
+                          "Find your dream trip",
+                          style: TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.bold),
                         ),
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(top: 50, bottom: 5),
+                            child: TextButton(
+                              onPressed: () {
+                                _singUpGoogle(context);
+                              },
+                              style: ButtonStyle(
+                                minimumSize: MaterialStateProperty.resolveWith(
+                                    (Set<MaterialState> states) {
+                                  return const Size(310, 40);
+                                }),
+                                foregroundColor:
+                                    MaterialStateProperty.resolveWith(
+                                        (Set<MaterialState> states) {
+                                  return states.contains(MaterialState.disabled)
+                                      ? null
+                                      : Colors.white;
+                                }),
+                                backgroundColor:
+                                    MaterialStateProperty.resolveWith(
+                                        (Set<MaterialState> states) {
+                                  return states.contains(MaterialState.disabled)
+                                      ? null
+                                      : const Color.fromRGBO(255, 55, 92, 1.0);
+                                }),
+                              ),
+                              child: const Text('Sign up with Google'),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(top: 10, bottom: 5),
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const SignUp()));
+                              },
+                              style: ButtonStyle(
+                                minimumSize: MaterialStateProperty.resolveWith(
+                                    (Set<MaterialState> states) {
+                                  return const Size(310, 40);
+                                }),
+                                foregroundColor:
+                                    MaterialStateProperty.resolveWith(
+                                        (Set<MaterialState> states) {
+                                  return states.contains(MaterialState.disabled)
+                                      ? null
+                                      : Colors.white;
+                                }),
+                                backgroundColor:
+                                    MaterialStateProperty.resolveWith(
+                                        (Set<MaterialState> states) {
+                                  return states.contains(MaterialState.disabled)
+                                      ? null
+                                      : const Color.fromRGBO(255, 55, 92, 1.0);
+                                }),
+                              ),
+                              child: const Text('Create account'),
+                            ),
+                          ),
+                        ],
                       ),
                       Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: const Text("or")),
-                      const Expanded(
-                        child: Divider(
-                          thickness: 1,
-                          color: Colors.black87,
+                        margin: const EdgeInsets.only(
+                            top: 15, bottom: 15, left: 20, right: 20),
+                        width: 310,
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Expanded(
+                                child: Divider(
+                                  thickness: 1,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: const Text("or")),
+                              const Expanded(
+                                child: Divider(
+                                  thickness: 1,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                            ]),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 5, bottom: 5),
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Login()));
+                          },
+                          style: ButtonStyle(
+                            minimumSize: MaterialStateProperty.resolveWith(
+                                (Set<MaterialState> states) {
+                              return const Size(310, 40);
+                            }),
+                            foregroundColor: MaterialStateProperty.resolveWith(
+                                (Set<MaterialState> states) {
+                              return states.contains(MaterialState.disabled)
+                                  ? null
+                                  : Colors.white;
+                            }),
+                            backgroundColor: MaterialStateProperty.resolveWith(
+                                (Set<MaterialState> states) {
+                              return states.contains(MaterialState.disabled)
+                                  ? null
+                                  : const Color.fromRGBO(255, 55, 92, 1.0);
+                            }),
+                          ),
+                          child: const Text('Sign in'),
                         ),
                       ),
-                    ]),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 5, bottom: 5),
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const Login()));
-                  },
-                  style: ButtonStyle(
-                    minimumSize: MaterialStateProperty.resolveWith(
-                        (Set<MaterialState> states) {
-                      return const Size(310, 40);
-                    }),
-                    foregroundColor: MaterialStateProperty.resolveWith(
-                        (Set<MaterialState> states) {
-                      return states.contains(MaterialState.disabled)
-                          ? null
-                          : Colors.white;
-                    }),
-                    backgroundColor: MaterialStateProperty.resolveWith(
-                        (Set<MaterialState> states) {
-                      return states.contains(MaterialState.disabled)
-                          ? null
-                          : const Color.fromRGBO(255, 55, 92, 1.0);
-                    }),
+                    ],
                   ),
-                  child: const Text('Sign in'),
                 ),
-              ),
-              Visibility(
-                visible: isCharging,
-                child: const LoadScreen(loadText: 'changing data'),
-              ),
-            ],
+                Visibility(
+                  visible: isCharging,
+                  child: const LoadScreen(loadText: 'loading data'),
+                ),
+              ],
+            ),
           ),
-        ));
+        ],
+      ),
+    );
   }
 }

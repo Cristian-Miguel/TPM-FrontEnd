@@ -133,317 +133,388 @@ class LoginState extends State<Login> {
           },
         ),
       ),
-      body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Stack(
-            alignment: AlignmentDirectional.center,
-            children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(top: 100, bottom: 5),
-                    child: Text(
-                      'Sign in',
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(
-                        top: 50, bottom: 0, left: 20, right: 20),
-                    child: TextFormField(
-                      controller: _emailInputTextController,
-                      decoration: const InputDecoration(
-                        labelText: 'Email',
-                        border: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Visibility(
+              visible: !isCharging,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  // Stack(
+                  //   alignment: AlignmentDirectional.center,
+                  children: <Widget>[
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 15),
+                          child: Text(
+                            'Sign in',
+                            style: Theme.of(context).textTheme.headlineMedium,
+                          ),
                         ),
-                        errorBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red),
-                        ),
-                      ),
-                      validator: (value) {
-                        var validation = [
-                          [
-                            (value == null || value.isEmpty),
-                            ErrorMessage.emptyField
-                          ],
-                          [
-                            ValidateField.validateRegex(
-                                value, RegexField.email),
-                            ErrorMessage.notValidEmail
-                          ]
-                        ];
+                        Container(
+                          margin: const EdgeInsets.only(
+                              top: 15, bottom: 0, left: 20, right: 20),
+                          child: TextFormField(
+                            controller: _emailInputTextController,
+                            decoration: const InputDecoration(
+                              labelText: 'Email',
+                              floatingLabelStyle: TextStyle(
+                                  color: Color.fromRGBO(77, 169, 219, 1.0)),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromRGBO(77, 169, 219, 1.0)),
+                              ),
+                              border: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black),
+                              ),
+                              errorBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red),
+                              ),
+                            ),
+                            validator: (value) {
+                              var validation = [
+                                [
+                                  (value == null || value.isEmpty),
+                                  ErrorMessage.emptyField
+                                ],
+                                [
+                                  ValidateField.validateRegex(
+                                      value, RegexField.email),
+                                  ErrorMessage.notValidEmail
+                                ]
+                              ];
 
-                        return ValidateField.printError(validation);
-                      },
-                    ),
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(
-                            top: 10, bottom: 0, right: 20, left: 20),
-                        child: TextFormField(
-                          controller: _passwordInputTextController,
-                          decoration: InputDecoration(
-                            labelText: 'Password',
-                            border: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black),
-                            ),
-                            errorBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.red),
-                            ),
-                            suffixIcon: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  hiddenPassword = (!hiddenPassword);
-                                  hiddenPassword
-                                      ? iconEye = const Icon(Icons.visibility)
-                                      : iconEye =
-                                          const Icon(Icons.visibility_off);
-                                });
-                              },
-                              alignment: Alignment.bottomCenter,
-                              padding: const EdgeInsets.all(0),
-                              icon: iconEye,
-                            ),
+                              return ValidateField.printError(validation);
+                            },
                           ),
-                          obscureText: hiddenPassword,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return ErrorMessage.emptyField;
-                            } else if (value.length < 8) {
-                              return ErrorMessage.shortPassword;
-                            } else if (value.length > 17) {
-                              return ErrorMessage.largePassword;
-                            }
-                            return null;
-                          },
                         ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(
-                            bottom: 20, top: 6, right: 20),
-                        alignment: Alignment.bottomRight,
-                        child: TextButton(
-                          onPressed: () => {
-                            setState(() {
-                              indexPage = 2;
-                              isView = true;
-                            }),
-                          },
-                          style: ButtonStyle(
-                            minimumSize: MaterialStateProperty.resolveWith(
-                                (Set<MaterialState> states) {
-                              return const Size(140, 10);
-                            }),
-                            foregroundColor: MaterialStateProperty.resolveWith(
-                                (Set<MaterialState> states) {
-                              return states.contains(MaterialState.disabled)
-                                  ? null
-                                  : Colors.blue;
-                            }),
-                            backgroundColor: MaterialStateProperty.resolveWith(
-                                (Set<MaterialState> states) {
-                              return states.contains(MaterialState.disabled)
-                                  ? null
-                                  : Colors.transparent;
-                            }),
-                          ),
-                          child: const Text('Forgot your password?'),
+                        //* Password TextField
+                        Column(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(
+                                  top: 10, bottom: 0, right: 20, left: 20),
+                              child: TextFormField(
+                                controller: _passwordInputTextController,
+                                decoration: InputDecoration(
+                                  labelText: 'Password',
+                                  floatingLabelStyle: const TextStyle(
+                                      color: Color.fromRGBO(77, 169, 219, 1.0)),
+                                  focusedBorder: const UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            Color.fromRGBO(77, 169, 219, 1.0)),
+                                  ),
+                                  border: const UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.black),
+                                  ),
+                                  errorBorder: const UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.red),
+                                  ),
+                                  suffixIcon: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        hiddenPassword = (!hiddenPassword);
+                                        hiddenPassword
+                                            ? iconEye =
+                                                const Icon(Icons.visibility)
+                                            : iconEye = const Icon(
+                                                Icons.visibility_off);
+                                      });
+                                    },
+                                    alignment: Alignment.bottomCenter,
+                                    padding: const EdgeInsets.all(0),
+                                    icon: iconEye,
+                                  ),
+                                ),
+                                obscureText: hiddenPassword,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return ErrorMessage.emptyField;
+                                  } else if (value.length < 8) {
+                                    return ErrorMessage.shortPassword;
+                                  } else if (value.length > 17) {
+                                    return ErrorMessage.largePassword;
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(
+                                  bottom: 20, top: 10, right: 20),
+                              alignment: Alignment.bottomRight,
+                              child: TextButton(
+                                onPressed: () => {
+                                  setState(() {
+                                    indexPage = 2;
+                                    isView = true;
+                                  }),
+                                },
+                                style: ButtonStyle(
+                                  textStyle: MaterialStateProperty.resolveWith(
+                                      (Set<MaterialState> states) {
+                                    return const TextStyle(
+                                      color: Colors.black54,
+                                      decoration: TextDecoration
+                                          .underline, // Add underline decoration
+                                    );
+                                  }),
+                                  minimumSize:
+                                      MaterialStateProperty.resolveWith(
+                                          (Set<MaterialState> states) {
+                                    return const Size(140, 10);
+                                  }),
+                                  foregroundColor:
+                                      MaterialStateProperty.resolveWith(
+                                          (Set<MaterialState> states) {
+                                    return states
+                                            .contains(MaterialState.disabled)
+                                        ? null
+                                        : Colors.blue;
+                                  }),
+                                  backgroundColor:
+                                      MaterialStateProperty.resolveWith(
+                                          (Set<MaterialState> states) {
+                                    return states
+                                            .contains(MaterialState.disabled)
+                                        ? null
+                                        : Colors.transparent;
+                                  }),
+                                ),
+                                child: const Text('Forgot your password?'),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                  //* Boton de inicio de sesion
-                  TextButton(
-                    onPressed: _getAuthRequestLogin,
-                    style: ButtonStyle(
-                      minimumSize: MaterialStateProperty.resolveWith(
-                          (Set<MaterialState> states) {
-                        return const Size(310, 40);
-                      }),
-                      foregroundColor: MaterialStateProperty.resolveWith(
-                          (Set<MaterialState> states) {
-                        return states.contains(MaterialState.disabled)
-                            ? null
-                            : Colors.white;
-                      }),
-                      backgroundColor: MaterialStateProperty.resolveWith(
-                          (Set<MaterialState> states) {
-                        return states.contains(MaterialState.disabled)
-                            ? null
-                            : const Color.fromRGBO(255, 55, 92, 1.0);
-                      }),
+                        //* Sign in button
+                        Container(
+                          margin: const EdgeInsets.only(top: 5, bottom: 5),
+                          alignment: Alignment.center,
+                          child: TextButton(
+                            onPressed: _getAuthRequestLogin,
+                            style: ButtonStyle(
+                              minimumSize: MaterialStateProperty.resolveWith(
+                                  (Set<MaterialState> states) {
+                                return const Size(310, 40);
+                              }),
+                              foregroundColor:
+                                  MaterialStateProperty.resolveWith(
+                                      (Set<MaterialState> states) {
+                                return states.contains(MaterialState.disabled)
+                                    ? null
+                                    : Colors.white;
+                              }),
+                              backgroundColor:
+                                  MaterialStateProperty.resolveWith(
+                                      (Set<MaterialState> states) {
+                                return states.contains(MaterialState.disabled)
+                                    ? null
+                                    : const Color.fromRGBO(255, 55, 92, 1.0);
+                              }),
+                            ),
+                            child: const Text('Sign in'),
+                          ),
+                        ),
+                        //* Divider
+                        Container(
+                          margin: const EdgeInsets.only(
+                              top: 10, bottom: 10, left: 20, right: 20),
+                          width: 300,
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Expanded(
+                                  child: Divider(
+                                    thickness: 1,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    child: const Text("or")),
+                                const Expanded(
+                                  child: Divider(
+                                    thickness: 1,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              ]),
+                        ),
+                        //* Sign In with google
+                        Container(
+                          margin: const EdgeInsets.only(top: 5, bottom: 2),
+                          width: 300,
+                          height: 40,
+                          alignment: Alignment.center,
+                          child: TextButton(
+                            onPressed: _signInGoogle,
+                            style: ButtonStyle(
+                              minimumSize: MaterialStateProperty.resolveWith(
+                                  (Set<MaterialState> states) {
+                                return const Size(300, 40);
+                              }),
+                              foregroundColor:
+                                  MaterialStateProperty.resolveWith(
+                                      (Set<MaterialState> states) {
+                                return states.contains(MaterialState.disabled)
+                                    ? null
+                                    : Colors.white;
+                              }),
+                              backgroundColor:
+                                  MaterialStateProperty.resolveWith(
+                                      (Set<MaterialState> states) {
+                                return states.contains(MaterialState.disabled)
+                                    ? null
+                                    : Colors.black38;
+                              }),
+                              alignment: Alignment.center,
+                            ),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.g_mobiledata_outlined,
+                                  color: Colors.white,
+                                ),
+                                Text(
+                                  'Sign up to Google',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // const Divider(
+                        //   color: Colors.black45,
+                        //   height: 20,
+                        //   thickness: 0.8,
+                        //   indent: 10,
+                        //   endIndent: 10,
+                        // ),
+                        // //*Registro de correo
+                        // Container(
+                        //   margin: const EdgeInsets.only(top: 1, bottom: 1),
+                        //   width: 300,
+                        //   height: 40,
+                        //   alignment: Alignment.center,
+                        //   child: TextButton(
+                        //     onPressed: () => {
+                        //       setState(() {
+                        //         indexPage = 1;
+                        //         isView = true;
+                        //       }),
+                        //     },
+                        //     style: ButtonStyle(
+                        //       minimumSize: MaterialStateProperty.resolveWith(
+                        //           (Set<MaterialState> states) {
+                        //         return const Size(310, 40);
+                        //       }),
+                        //       foregroundColor:
+                        //           MaterialStateProperty.resolveWith(
+                        //               (Set<MaterialState> states) {
+                        //         return states.contains(MaterialState.disabled)
+                        //             ? null
+                        //             : Colors.white;
+                        //       }),
+                        //       backgroundColor:
+                        //           MaterialStateProperty.resolveWith(
+                        //               (Set<MaterialState> states) {
+                        //         return states.contains(MaterialState.disabled)
+                        //             ? null
+                        //             : const Color.fromRGBO(255, 55, 92, 1.0);
+                        //       }),
+                        //     ),
+                        //     child: Row(
+                        //       mainAxisAlignment: MainAxisAlignment.center,
+                        //       crossAxisAlignment: CrossAxisAlignment.center,
+                        //       children: [
+                        //         Container(
+                        //           margin: const EdgeInsets.only(right: 2),
+                        //           child: const Icon(
+                        //             Icons.email,
+                        //             color: Colors.white,
+                        //           ),
+                        //         ),
+                        //         const Text(
+                        //           'Create account',
+                        //           style: TextStyle(
+                        //             color: Colors.white,
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
+                        // //* Registro de google
+                        // Container(
+                        //   margin: const EdgeInsets.only(top: 1, bottom: 1),
+                        //   width: 300,
+                        //   height: 40,
+                        //   alignment: Alignment.center,
+                        //   child: TextButton(
+                        //     onPressed: _singUpGoogle,
+                        //     style: ButtonStyle(
+                        //       minimumSize: MaterialStateProperty.resolveWith(
+                        //           (Set<MaterialState> states) {
+                        //         return const Size(300, 40);
+                        //       }),
+                        //       foregroundColor:
+                        //           MaterialStateProperty.resolveWith(
+                        //               (Set<MaterialState> states) {
+                        //         return states.contains(MaterialState.disabled)
+                        //             ? null
+                        //             : Colors.white;
+                        //       }),
+                        //       backgroundColor:
+                        //           MaterialStateProperty.resolveWith(
+                        //               (Set<MaterialState> states) {
+                        //         return states.contains(MaterialState.disabled)
+                        //             ? null
+                        //             : Colors.black38;
+                        //       }),
+                        //       alignment: Alignment.center,
+                        //     ),
+                        //     child: Row(
+                        //       mainAxisAlignment: MainAxisAlignment.center,
+                        //       crossAxisAlignment: CrossAxisAlignment.center,
+                        //       children: [
+                        //         Container(
+                        //           margin: const EdgeInsets.only(right: 2),
+                        //           child: const Icon(
+                        //             Icons.g_mobiledata,
+                        //             color: Colors.white,
+                        //           ),
+                        //         ),
+                        //         const Text(
+                        //           'Create new account with google',
+                        //           style: TextStyle(
+                        //             color: Colors.white,
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
+                      ],
                     ),
-                    child: const Text('Sign in'),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 10),
-                    child: const Text('- or -'),
-                  ),
-                  //* login de google
-                  Container(
-                    margin: const EdgeInsets.only(top: 10, bottom: 2),
-                    width: 300,
-                    height: 40,
-                    alignment: Alignment.center,
-                    child: TextButton(
-                      onPressed: _signInGoogle,
-                      style: ButtonStyle(
-                        minimumSize: MaterialStateProperty.resolveWith(
-                            (Set<MaterialState> states) {
-                          return const Size(300, 40);
-                        }),
-                        foregroundColor: MaterialStateProperty.resolveWith(
-                            (Set<MaterialState> states) {
-                          return states.contains(MaterialState.disabled)
-                              ? null
-                              : Colors.white;
-                        }),
-                        backgroundColor: MaterialStateProperty.resolveWith(
-                            (Set<MaterialState> states) {
-                          return states.contains(MaterialState.disabled)
-                              ? null
-                              : Colors.black38;
-                        }),
-                        alignment: Alignment.center,
-                      ),
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.g_mobiledata_outlined,
-                            color: Colors.white,
-                          ),
-                          Text(
-                            'Sign up to Google',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const Divider(
-                    color: Colors.black45,
-                    height: 20,
-                    thickness: 0.8,
-                    indent: 10,
-                    endIndent: 10,
-                  ),
-                  //*Registro de correo
-                  Container(
-                    margin: const EdgeInsets.only(top: 1, bottom: 1),
-                    width: 300,
-                    height: 40,
-                    alignment: Alignment.center,
-                    child: TextButton(
-                      onPressed: () => {
-                        setState(() {
-                          indexPage = 1;
-                          isView = true;
-                        }),
-                      },
-                      style: ButtonStyle(
-                        minimumSize: MaterialStateProperty.resolveWith(
-                            (Set<MaterialState> states) {
-                          return const Size(310, 40);
-                        }),
-                        foregroundColor: MaterialStateProperty.resolveWith(
-                            (Set<MaterialState> states) {
-                          return states.contains(MaterialState.disabled)
-                              ? null
-                              : Colors.white;
-                        }),
-                        backgroundColor: MaterialStateProperty.resolveWith(
-                            (Set<MaterialState> states) {
-                          return states.contains(MaterialState.disabled)
-                              ? null
-                              : const Color.fromRGBO(255, 55, 92, 1.0);
-                        }),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(right: 2),
-                            child: const Icon(
-                              Icons.email,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const Text(
-                            'Create account',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  //* Registro de google
-                  Container(
-                    margin: const EdgeInsets.only(top: 1, bottom: 1),
-                    width: 300,
-                    height: 40,
-                    alignment: Alignment.center,
-                    child: TextButton(
-                      onPressed: _singUpGoogle,
-                      style: ButtonStyle(
-                        minimumSize: MaterialStateProperty.resolveWith(
-                            (Set<MaterialState> states) {
-                          return const Size(300, 40);
-                        }),
-                        foregroundColor: MaterialStateProperty.resolveWith(
-                            (Set<MaterialState> states) {
-                          return states.contains(MaterialState.disabled)
-                              ? null
-                              : Colors.white;
-                        }),
-                        backgroundColor: MaterialStateProperty.resolveWith(
-                            (Set<MaterialState> states) {
-                          return states.contains(MaterialState.disabled)
-                              ? null
-                              : Colors.black38;
-                        }),
-                        alignment: Alignment.center,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(right: 2),
-                            child: const Icon(
-                              Icons.g_mobiledata,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const Text(
-                            'Create new account with google',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-              Visibility(
-                visible: isCharging,
-                child: const LoadScreen(loadText: 'logger'),
-              ),
-            ],
-          ),
+            ),
+            Visibility(
+              visible: isCharging,
+              child: const LoadScreen(loadText: 'logger'),
+            ),
+          ],
         ),
       ),
     );
