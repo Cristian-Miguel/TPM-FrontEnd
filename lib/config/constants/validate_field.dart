@@ -1,7 +1,9 @@
 class ValidateField {
   static validateRegex(value, RegexField regexfield) {
     final regex = RegExp(regexfield.regex);
-    return value!.isNotEmpty && !regex.hasMatch(value);
+    bool empty = value!.isNotEmpty;
+    bool validate = regex.hasMatch(value);
+    return empty && validate;
   }
 
   static printError(validation) {
@@ -20,8 +22,8 @@ enum RegexField {
       r'[0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9]'
       r'[0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\'
       r'x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])'),
-  password(
-      r"^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,16}$"),
+  password(r"^[\w!@#$%^&*()\-_=+[{}]\\|:;'"
+      r'",\./<>?~`]{8,16}'),
   integer('[0-9]{1,}'),
   letters('[A-z]{1,}'),
   date(
@@ -32,3 +34,5 @@ enum RegexField {
 
   const RegexField(this.regex);
 }
+
+//^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,16}$
